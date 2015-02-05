@@ -1,12 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Cardboard Workout</title>
+  <meta charset="utf-8" />
+  <title>gyro.js - easy access to your web browsers built in accelerometer's and gyroscope's</title>
 </head>
 <body>
-  <div id="container"></div>
-  <script src="javascripts/libs/three.min.js"></script>
-  <script src="javascripts/workouts.js"></script>
+  <p>This Example just print's the raw accelerometer and gyro data. Will return null if no device information is found.</p>
+  <p>gyro.getFeatures: <span id="features"></span></p>
+  <span id="example"></span>
+  <script src="javascripts/libs/gyro.js"></script>
+  <script>
+  gyro.startTracking(function(o) {
+    var b = document.getElementById('example'),
+    f = document.getElementById('features');
+    f.innerHTML = gyro.getFeatures();
+    b.innerHTML = "<p> x = " + o.x + "</p>" +
+    "<p> y = " + o.y + "</p>" +
+    "<p> z = " + o.z + "</p>" +
+    "<p> alpha = " + o.alpha + "</p>" +
+    "<p> beta = " + o.beta + "</p>" +
+    "<p> gamma = " + o.gamma + "</p>";
+  });
+  </script>
 </body>
 </html>
