@@ -40,14 +40,28 @@
     function initGyro() {
       console.log("start tracking");
       gyro.startTracking(function(o) {
+        var x = o.x.toFixed(3),
+          y = o.y.toFixed(3),
+          needsRender = false;
 
         // f.innerHTML = gyro.getFeatures();
-        // console.log(o.x.toFixed(3));
-        // console.log(o.y.toFixed(3));
+        console.log(x);
+        console.log(y);
 
-        mesh.position.x = o.x.toFixed(3);
-        mesh.position.y = o.y.toFixed(3);
-        renderer.render( scene, camera );
+        if (mesh.position.x !== x) {
+          mesh.position.x = x;
+          needsRender = true;
+        }
+
+        if (mesh.position.y !== y) {
+          mesh.position.y = y;
+          needsRender = true;
+        }
+
+        if (needsRender) {
+          renderer.render( scene, camera );
+        }
+
         // o.z
         // o.alpha
         // o.beta
