@@ -55,7 +55,7 @@
         // }
 
         if (mesh.position.y !== y) {
-          mesh.position.y += parseFloat(y);
+          mesh.position.y = parseFloat(y);
           needsRender = true;
         }
 
