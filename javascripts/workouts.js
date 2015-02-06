@@ -5,6 +5,7 @@
 
   init();
   animate();
+  initGyro();
 
   function init() {
 
@@ -49,12 +50,12 @@
         console.log(y);
 
         if (mesh.position.x !== x) {
-          mesh.position.x = x;
+          mesh.position.x += x;
           needsRender = true;
         }
 
         if (mesh.position.y !== y) {
-          mesh.position.y = y;
+          mesh.position.y += y;
           needsRender = true;
         }
 
