@@ -46,7 +46,7 @@
           needsRender = false;
 
         // f.innerHTML = gyro.getFeatures();
-        console.log(x);
+        // console.log(x);
         console.log(y);
 
         // if (mesh.position.x !== x) {
@@ -64,7 +64,6 @@
           console.log(mesh.position.y);
         }
 
-        console.log(mesh.position.y);
         // console.log(mesh.position.x);
 
         // o.z
