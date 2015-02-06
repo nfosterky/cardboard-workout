@@ -49,10 +49,10 @@
         console.log(x);
         console.log(y);
 
-        if (mesh.position.x !== x) {
-          mesh.position.x += x;
-          needsRender = true;
-        }
+        // if (mesh.position.x !== x) {
+        //   mesh.position.x += x;
+        //   needsRender = true;
+        // }
 
         if (mesh.position.y !== y) {
           mesh.position.y += y;
@@ -61,7 +61,11 @@
 
         if (needsRender) {
           renderer.render( scene, camera );
+          console.log(mesh.position.y);
         }
+
+        console.log(mesh.position.y);
+        // console.log(mesh.position.x);
 
         // o.z
         // o.alpha
@@ -82,6 +86,8 @@
     function animate() {
 
       requestAnimationFrame( animate );
+
+
 
       renderer.render( scene, camera );
 
