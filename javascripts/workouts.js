@@ -53,9 +53,10 @@
         //   mesh.position.x += x;
         //   needsRender = true;
         // }
+        var newY = mesh.position.y + parseFloat(y) * 1.5;
 
-        if (mesh.position.y <= 400 && mesh.position.y >= -400) {
-          mesh.position.y += parseFloat(y) * 1.5;
+        if (newY <= 400 && newY >= -400) {
+          mesh.position.y = newY;
           needsRender = true;
         }
 
