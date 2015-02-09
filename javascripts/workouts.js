@@ -69,15 +69,17 @@
         var yNoiseUpper = 0.2,
           yNoiseLower = -0.2;
 
+        var yAcceleration = o.y.toFixed(3),
+          needsRender = false,
+          currentTime = new Date();
+
         if (parseFloat(o.y.toFixed(2)) >= yNoiseUpper ||
             parseFloat(o.y.toFixed(2)) <= yNoiseLower) {
 
           if (parseFloat(o.y.toFixed(2)) >= yNoiseUpper) {
 
           }
-          var yAcceleration = o.y.toFixed(3),
-          needsRender = false,
-          currentTime = new Date(),
+
 
           // dividing by 1000 to decrease velocity by 1000 and position by
           // 100000
