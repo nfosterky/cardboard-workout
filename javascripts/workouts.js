@@ -42,8 +42,6 @@
 
     }
 
-
-
     function velocity (lastVelocity, acceleration, timeStep) {
       return lastVelocity + (acceleration * timeStep);
     }
@@ -68,7 +66,10 @@
           var yAcceleration = o.y.toFixed(3),
           needsRender = false,
           currentTime = new Date(),
-          timeStep = currentTime - lastTime;
+
+          // dividing by 1000 to decrease velocity by 1000 and position by
+          // 100000 
+          timeStep = (currentTime - lastTime) / 1000;
 
           console.log("y-acceleration: "  + o.y.toFixed(3));
 
