@@ -54,7 +54,7 @@
     }
 
 
-    // initialize gyro some other comments
+
     function initGyro() {
       console.log("start tracking");
       gyro.frequency = 100;
