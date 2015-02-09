@@ -103,8 +103,8 @@
 
           yAcceleration -= noise;
 
-          if (yAcceleration <= 0.01 &&
-              yAcceleration >= -0.01) {
+          if (yAcceleration <= 0.05 &&
+              yAcceleration >= -0.05) {
 
             yAcceleration = 0;
           }
