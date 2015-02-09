@@ -4,7 +4,7 @@
   var mesh;
 
   var lastVelocity = 0,
-      lastTime = new Date(),
+      lastTime = false,
       lastPosition = 0;
 
   init();
@@ -42,6 +42,8 @@
 
     }
 
+    // acceleration is in (meters/second)^2
+    // timestep is in seconds
     function velocity (lastVelocity, acceleration, timeStep) {
       return lastVelocity + (acceleration * timeStep);
     }
@@ -79,15 +81,19 @@
 
           // dividing by 1000 to decrease velocity by 1000 and position by
           // 100000
+          // time is in seconds
+          if (!lastTime) {
+            lastTime = currentTime;
+          }
           timeStep = (currentTime - lastTime) / 1000;
-
+          lastTime = currentTime;
           // console.log("y-acceleration: "  + yAcceleration);
 
           lastVelocity = velocity(lastVelocity, yAcceleration, timeStep);
           lastPosition = position(lastPosition, lastVelocity, yAcceleration, timeStep);
           // console.log("Velocity: " + lastVelocity);
           // console.log("Position: " + lastPosition);
-          lastTime = currentTime;
+
 
           // if (newY <= 400 && newY >= -400) {
           //   mesh.position.y = newY;
