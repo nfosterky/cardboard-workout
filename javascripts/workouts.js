@@ -66,7 +66,7 @@
         var yNoiseUpper = 0.2,
           yNoiseLower = -0.2;
 
-        var sum, noise;
+        var sum, noise = false;
 
         var yAcceleration = o.y.toFixed(3),
           needsRender = false,
@@ -74,17 +74,21 @@
 
 
 
-        if (listYAccelerations.length < 100) {
+        if (listYAccelerations.length <= 100) {
           listYAccelerations.push(yAcceleration);
-        } else if (listYAccelerations.length === 100) {
-          sum = 0;
-          for (var i = 0; i < listYAccelerations.length; i++) {
-            sum += listYAccelerations[i];
-          }
-          noise = sum / listYAccelerations.length;
+        } else if (listYAccelerations.length > 100) {
 
-          alert("calibration done - Noise: " + noise);
-        } else {
+          if (!noise) {
+            sum = 0;
+            for (var i = 0; i < listYAccelerations.length; i++) {
+              sum += listYAccelerations[i];
+            }
+            noise = sum / 100;
+
+            alert("calibration done - Noise: " + noise);
+            console.log("Noise: " + noise);
+            console.log(listYAccelerations);
+          }
 
           if (parseFloat(o.y.toFixed(2)) >= yNoiseUpper ||
               parseFloat(o.y.toFixed(2)) <= yNoiseLower) {
