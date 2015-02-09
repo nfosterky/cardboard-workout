@@ -199,6 +199,7 @@
 				e.target.removeEventListener('devicemotion', deviceMotionListener, true);
 
 				e.target.addEventListener('devicemotion', function(e) {
+					console.log(e);
 					measurements.x = e.accelerationIncludingGravity.x - calibration.x;
 					measurements.y = e.accelerationIncludingGravity.y - calibration.y;
 					measurements.z = e.accelerationIncludingGravity.z - calibration.z;
