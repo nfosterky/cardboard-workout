@@ -85,46 +85,42 @@
               sum += parseFloat(listYAccelerations[i]);
             }
             noise = sum / 100;
-
-
-            console.log("Noise: " + noise);
-            console.log(listYAccelerations);
+            // calibration done
           }
 
-          if (parseFloat(o.y.toFixed(2)) >= yNoiseUpper ||
-              parseFloat(o.y.toFixed(2)) <= yNoiseLower) {
-
-            // dividing by 1000 to decrease velocity by 1000 and position by
-            // 100000
-            // time is in seconds
-            // if there is no last time
-            // or if last time is greater than frequency
-            if (lastTime && lastTime <= (gyro.frequency * 2) / 1000) {
-              timeStep = (currentTime - lastTime) / 1000;
-              lastTime = currentTime;
-            } else {
-              lastTime = currentTime;
-              timeStep = (currentTime - lastTime) / 1000;
-            }
-
-            console.log("lastPosition: " + lastPosition);
-            console.log("lastVelocity: " + lastVelocity);
-            console.log("timeStep: " + timeStep);
-            console.log("acceleration: " + yAcceleration);
-            // only do this if acceleration > then noise
-            lastVelocity = velocity(lastVelocity, yAcceleration, timeStep);
-            lastPosition = position(lastPosition, lastVelocity, yAcceleration,
-                timeStep);
-
-            // if (newY <= 400 && newY >= -400) {
-            //   mesh.position.y = newY;
-            //   needsRender = true;
-            // }
-            // if (needsRender) {
-            //   renderer.render( scene, camera );
-            //   console.log(mesh.position.y);
-            // }
+          // dividing by 1000 to decrease velocity by 1000 and position by
+          // 100000
+          // time is in seconds
+          // if there is no last time
+          // or if last time is greater than frequency
+          if (lastTime && lastTime <= (gyro.frequency * 2) / 1000) {
+            timeStep = (currentTime - lastTime) / 1000;
+            lastTime = currentTime;
+          } else {
+            lastTime = currentTime;
+            timeStep = (currentTime - lastTime) / 1000;
           }
+
+          yAcceleration -= noise;
+
+          console.log("lastPosition: " + lastPosition);
+          console.log("lastVelocity: " + lastVelocity);
+          console.log("timeStep: " + timeStep);
+          console.log("acceleration: " + yAcceleration);
+          // only do this if acceleration > then noise
+          lastVelocity = velocity(lastVelocity, yAcceleration, timeStep);
+          lastPosition = position(lastPosition, lastVelocity, yAcceleration,
+              timeStep);
+
+          // if (newY <= 400 && newY >= -400) {
+          //   mesh.position.y = newY;
+          //   needsRender = true;
+          // }
+          // if (needsRender) {
+          //   renderer.render( scene, camera );
+          //   console.log(mesh.position.y);
+          // }
+
         }
 
         if (parseFloat(o.x.toFixed(1)) >= 0.5) {
