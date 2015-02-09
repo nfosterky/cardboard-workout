@@ -59,7 +59,7 @@
 
       gyro.startTracking(function(o) {
         var yNoiseUpper = 0.2,
-          yNoiseLower = 0.13;
+          yNoiseLower = -0.13;
 
         if (parseFloat(o.y.toFixed(2)) >= yNoiseUpper ||
             parseFloat(o.y.toFixed(2)) <= yNoiseLower) {
