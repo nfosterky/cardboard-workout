@@ -81,7 +81,7 @@
           if (!noise) {
             sum = 0;
             for (var i = 0; i < listYAccelerations.length; i++) {
-              sum += listYAccelerations[i];
+              sum += parseFloat(listYAccelerations[i]);
             }
             noise = sum / 100;
 
