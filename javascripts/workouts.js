@@ -57,8 +57,11 @@
     // initialize gyro some other comments
     function initGyro() {
       console.log("start tracking");
+      gyro.frequency = 10000;
+
       gyro.startTracking(function(o) {
         var ynoise = 0.2;
+
         if (parseFloat(o.y.toFixed(1)) >= ynoise) {
           var yAcceleration = o.y.toFixed(3) - ynoise,
           needsRender = false,
