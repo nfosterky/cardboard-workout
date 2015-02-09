@@ -38,27 +38,33 @@
 
     }
 
+    var lastVelocity = 0,
+      lastTime = new Date();
+
+    function velocity (lastVelocity, acceleration) {
+      var currentTime = new Date(),
+          velocity = lastVelocity + (acceleration * (currentTime - lastTime));
+
+      lastTime = currentTime;
+      lastVelocity = velocity;
+      return velocity;
+    }
+
     function initGyro() {
       console.log("start tracking");
       gyro.startTracking(function(o) {
         var x = o.x.toFixed(3),
-          y = o.y.toFixed(3),
+          yAcceleration = o.y.toFixed(3),
           needsRender = false;
 
-        // f.innerHTML = gyro.getFeatures();
-        // console.log(x);
-        console.log(y);
+        console.log(velocity(lastVelocity, yAcceleration));
 
-        // if (mesh.position.x !== x) {
-        //   mesh.position.x += x;
+
+        //
+        // if (newY <= 400 && newY >= -400) {
+        //   mesh.position.y = newY;
         //   needsRender = true;
         // }
-        var newY = mesh.position.y + parseFloat(y) * 1.5;
-
-        if (newY <= 400 && newY >= -400) {
-          mesh.position.y = newY;
-          needsRender = true;
-        }
 
         if (needsRender) {
           renderer.render( scene, camera );
