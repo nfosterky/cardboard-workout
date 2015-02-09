@@ -58,8 +58,9 @@
     function initGyro() {
       console.log("start tracking");
       gyro.startTracking(function(o) {
-        if (parseFloat(o.y.toFixed(1)) >= 0.2) {
-          var yAcceleration = o.y.toFixed(3),
+        var ynoise = 0.2;
+        if (parseFloat(o.y.toFixed(1)) >= ynoise) {
+          var yAcceleration = o.y.toFixed(3) - ynoise,
           needsRender = false,
           currentTime = new Date(),
           timeStep = currentTime - lastTime;
