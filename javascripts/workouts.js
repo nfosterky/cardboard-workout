@@ -60,7 +60,7 @@
       var listYAccelerations = [];
       var noise = false;
       console.log("start tracking");
-      gyro.frequency = 10;
+      gyro.frequency = 100;
 
       // some comments
       gyro.startTracking(function(o) {
@@ -103,6 +103,11 @@
 
           yAcceleration -= noise;
 
+          if (yAcceleration <= 0.01 &&
+              yAcceleration >= -0.01) {
+
+            yAcceleration = 0;
+          }
           console.log("lastPosition: " + lastPosition);
           console.log("lastVelocity: " + lastVelocity);
           console.log("timeStep: " + timeStep);
