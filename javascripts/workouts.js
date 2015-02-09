@@ -59,16 +59,20 @@
 
       gyro.startTracking(function(o) {
         var yNoiseUpper = 0.2,
-          yNoiseLower = 0;
+          yNoiseLower = 0.13;
 
         if (parseFloat(o.y.toFixed(2)) >= yNoiseUpper ||
             parseFloat(o.y.toFixed(2)) <= yNoiseLower) {
+
+          if (parseFloat(o.y.toFixed(2)) >= yNoiseUpper) {
+
+          }
           var yAcceleration = o.y.toFixed(3),
           needsRender = false,
           currentTime = new Date(),
 
           // dividing by 1000 to decrease velocity by 1000 and position by
-          // 100000 
+          // 100000
           timeStep = (currentTime - lastTime) / 1000;
 
           console.log("y-acceleration: "  + o.y.toFixed(3));
