@@ -62,7 +62,7 @@
           currentTime = new Date(),
           timeStep = currentTime - lastTime;
 
-          console.log("acceleration: "  + o.y.toFixed(3));
+          console.log("y-acceleration: "  + o.y.toFixed(3));
 
           lastVelocity = velocity(lastVelocity, yAcceleration, timeStep);
           lastPosition = position(lastPosition, lastVelocity, yAcceleration, timeStep);
@@ -86,6 +86,13 @@
           // o.gamma
         }
 
+        if (o.x.toFixed(1) >= 0.2) {
+          console.log("x-acceleration: "  + o.x.toFixed(3));
+        }
+
+        if (o.z.toFixed(1) >= 0.2) {
+          console.log("z-acceleration: "  + o.z.toFixed(3));
+        }
       });
     }
 
