@@ -85,7 +85,7 @@
             }
             noise = sum / 100;
 
-            alert("calibration done - Noise: " + noise);
+            
             console.log("Noise: " + noise);
             console.log(listYAccelerations);
           }
