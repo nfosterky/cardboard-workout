@@ -73,7 +73,7 @@
           currentTime = new Date();
 
 
-
+// some comments lots of comments
         if (listYAccelerations.length <= 100) {
           listYAccelerations.push(yAcceleration);
         } else if (listYAccelerations.length > 100) {
@@ -85,7 +85,7 @@
             }
             noise = sum / 100;
 
-            
+
             console.log("Noise: " + noise);
             console.log(listYAccelerations);
           }
