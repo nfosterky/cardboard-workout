@@ -52,7 +52,7 @@
     }
 
 
-    // some comments
+    
     function initGyro() {
       console.log("start tracking");
       gyro.frequency = 10;
