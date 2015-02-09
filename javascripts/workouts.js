@@ -58,6 +58,7 @@
 
     function initGyro() {
       var listYAccelerations = [];
+      var noise = false;
       console.log("start tracking");
       gyro.frequency = 10;
 
@@ -66,7 +67,7 @@
         var yNoiseUpper = 0.2,
           yNoiseLower = -0.2;
 
-        var sum, noise = false;
+        var sum;
 
         var yAcceleration = o.y.toFixed(3),
           needsRender = false,
