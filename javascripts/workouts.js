@@ -47,6 +47,11 @@
     }
 
     function position (lastPosition, lastVelocity, acceleration, timeStep) {
+      console.log("lastPosition: " + lastPosition);
+      console.log("lastVelocity: " + lastVelocity);
+      console.log("timeStep: " + timeStep);
+      console.log("acceleration: " + acceleration);
+
       return lastPosition + lastVelocity * timeStep +
           (0.5 * acceleration * timeStep * timeStep);
     }
@@ -76,12 +81,12 @@
           // 100000
           timeStep = (currentTime - lastTime) / 1000;
 
-          console.log("y-acceleration: "  + o.y.toFixed(3));
+          // console.log("y-acceleration: "  + yAcceleration);
 
           lastVelocity = velocity(lastVelocity, yAcceleration, timeStep);
           lastPosition = position(lastPosition, lastVelocity, yAcceleration, timeStep);
-          console.log("Velocity: " + lastVelocity);
-          console.log("Position: " + lastPosition);
+          // console.log("Velocity: " + lastVelocity);
+          // console.log("Position: " + lastPosition);
           lastTime = currentTime;
 
           // if (newY <= 400 && newY >= -400) {
