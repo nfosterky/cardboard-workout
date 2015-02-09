@@ -56,7 +56,7 @@
     function initGyro() {
       console.log("start tracking");
       gyro.startTracking(function(o) {
-        if (parse(o.y.toFixed(1)) >= 0.2) {
+        if (parseFloat(o.y.toFixed(1)) >= 0.2) {
           var yAcceleration = o.y.toFixed(3),
           needsRender = false,
           currentTime = new Date(),
