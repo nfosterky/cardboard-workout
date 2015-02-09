@@ -84,7 +84,7 @@
           // dividing by 1000 to decrease velocity by 1000 and position by
           // 100000
           // time is in seconds
-          if (!lastTime) {
+          if (!lastTime || lastTime >= gyro.frequency * 2) {
             lastTime = currentTime;
           }
           timeStep = (currentTime - lastTime) / 1000;
