@@ -56,7 +56,7 @@
     function initGyro() {
       console.log("start tracking");
       gyro.startTracking(function(o) {
-        if (o.y.toFixed(1) >= 0.2) {
+        if (parse(o.y.toFixed(1)) >= 0.2) {
           var yAcceleration = o.y.toFixed(3),
           needsRender = false,
           currentTime = new Date(),
@@ -86,11 +86,11 @@
           // o.gamma
         }
 
-        if (o.x.toFixed(1) >= 0.5) {
+        if (parseFloat(o.x.toFixed(1)) >= 0.5) {
           console.log("x-acceleration: "  + o.x.toFixed(3));
         }
 
-        if (o.z.toFixed(1) >= 9.5) {
+        if (parseFloat(o.z.toFixed(1)) >= 9.5) {
           console.log("z-acceleration: "  + o.z.toFixed(3));
         }
       });
