@@ -79,7 +79,7 @@
           listYAccelerations.push(yAcceleration);
         } else if (listYAccelerations.length > 100) {
 
-          if (noise !== false) {
+          if (noise === false) {
             sum = 0;
             for (var i = 0; i < listYAccelerations.length; i++) {
               sum += parseFloat(listYAccelerations[i]);
