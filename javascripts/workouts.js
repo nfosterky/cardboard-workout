@@ -92,7 +92,7 @@
           console.log("x-acceleration: "  + o.x.toFixed(3));
         }
 
-        if (parseFloat(o.z.toFixed(1)) >= 9.5) {
+        if (parseFloat(o.z.toFixed(1)) >= 9.8) {
           console.log("z-acceleration: "  + o.z.toFixed(3));
         }
       });
