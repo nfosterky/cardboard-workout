@@ -84,11 +84,17 @@
           // dividing by 1000 to decrease velocity by 1000 and position by
           // 100000
           // time is in seconds
-          if (!lastTime || lastTime >= gyro.frequency * 2) {
+          // if there is no last time
+          // or if last time is greater than frequency
+          if (lastTime && lastTime <= (gyro.frequency * 2) / 1000) {
+            timeStep = (currentTime - lastTime) / 1000;
             lastTime = currentTime;
+          } else {
+            lastTime = currentTime;
+            timeStep = (currentTime - lastTime) / 1000;
           }
-          timeStep = (currentTime - lastTime) / 1000;
-          lastTime = currentTime;
+
+
           // console.log("y-acceleration: "  + yAcceleration);
 
           lastVelocity = velocity(lastVelocity, yAcceleration, timeStep);
