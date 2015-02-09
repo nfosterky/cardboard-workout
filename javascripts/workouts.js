@@ -60,7 +60,7 @@
       var listYAccelerations = [];
       var noise = false;
       console.log("start tracking");
-      gyro.frequency = 100;
+      gyro.frequency = 10000;
 
       // some comments
       gyro.startTracking(function(o) {
