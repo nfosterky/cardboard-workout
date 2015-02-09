@@ -60,11 +60,11 @@
       gyro.frequency = 100;
 
       gyro.startTracking(function(o) {
-        var yNoiseUpper = 0.20,
+        var yNoiseUpper = 0.2,
           yNoiseLower = 0;
 
-        if (parseFloat(o.y.toFixed(1)) >= yNoiseUpper ||
-            parseFloat(o.y.toFixed(1)) <= yNoiseLower) {
+        if (parseFloat(o.y.toFixed(2)) >= yNoiseUpper ||
+            parseFloat(o.y.toFixed(2)) <= yNoiseLower) {
           var yAcceleration = o.y.toFixed(3),
           needsRender = false,
           currentTime = new Date(),
