@@ -39,27 +39,31 @@
     }
 
     var lastVelocity = 0,
-      lastTime = new Date();
+      lastTime = new Date(),
+      lastPosition = 0;
 
-    function velocity (lastVelocity, acceleration) {
-      var currentTime = new Date(),
-          velocity = lastVelocity + (acceleration * (currentTime - lastTime));
+    function velocity (lastVelocity, acceleration, timeStep) {
+      return lastVelocity + (acceleration * timeStep);
+    }
 
-      lastTime = currentTime;
-      lastVelocity = velocity;
-      return velocity;
+    function position (lastPosition, lastVelocity, acceleration, timeStep) {
+      return lastPosition + lastVelocity * timeStep + (0.5 * acceleration * timeStep * timeStep);
     }
 
     function initGyro() {
       console.log("start tracking");
       gyro.startTracking(function(o) {
         var yAcceleration = o.y.toFixed(3),
-          needsRender = false;
+          needsRender = false,
+          currentTime = new Date(),
+          timeStep = currentTime - lastTime;
 
-        console.log(velocity(lastVelocity, yAcceleration));
+        lastVelocity = velocity(lastVelocity, yAcceleration, timeStep);
+        lastPosition = position(lastPosition, lastVelocity, yAcceleration, timeStep);
+        console.log("Velocity: " + lastVelocity);
+        console.log("Position: " + lastPosition);
+        lastTime = currentTime;
 
-
-        //
         // if (newY <= 400 && newY >= -400) {
         //   mesh.position.y = newY;
         //   needsRender = true;
