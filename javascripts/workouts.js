@@ -56,35 +56,36 @@
     function initGyro() {
       console.log("start tracking");
       gyro.startTracking(function(o) {
-        var yAcceleration = o.y.toFixed(3),
+        if (o.y.toFixed(1) >= 0.2) {
+          var yAcceleration = o.y.toFixed(3),
           needsRender = false,
           currentTime = new Date(),
           timeStep = currentTime - lastTime;
 
-        console.log("acceleration: "  + o.y.toFixed(3));
+          console.log("acceleration: "  + o.y.toFixed(3));
 
-        lastVelocity = velocity(lastVelocity, yAcceleration, timeStep);
-        lastPosition = position(lastPosition, lastVelocity, yAcceleration, timeStep);
-        console.log("Velocity: " + lastVelocity);
-        console.log("Position: " + lastPosition);
-        lastTime = currentTime;
+          lastVelocity = velocity(lastVelocity, yAcceleration, timeStep);
+          lastPosition = position(lastPosition, lastVelocity, yAcceleration, timeStep);
+          console.log("Velocity: " + lastVelocity);
+          console.log("Position: " + lastPosition);
+          lastTime = currentTime;
 
-        // if (newY <= 400 && newY >= -400) {
-        //   mesh.position.y = newY;
-        //   needsRender = true;
-        // }
+          // if (newY <= 400 && newY >= -400) {
+          //   mesh.position.y = newY;
+          //   needsRender = true;
+          // }
 
-        if (needsRender) {
-          renderer.render( scene, camera );
-          console.log(mesh.position.y);
+          if (needsRender) {
+            renderer.render( scene, camera );
+            console.log(mesh.position.y);
+          }
+
+          // o.z
+          // o.alpha
+          // o.beta
+          // o.gamma
         }
 
-        // console.log(mesh.position.x);
-
-        // o.z
-        // o.alpha
-        // o.beta
-        // o.gamma
       });
     }
 
