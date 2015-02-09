@@ -53,8 +53,7 @@
     function initGyro() {
       console.log("start tracking");
       gyro.startTracking(function(o) {
-        var x = o.x.toFixed(3),
-          yAcceleration = o.y.toFixed(3),
+        var yAcceleration = o.y.toFixed(3),
           needsRender = false;
 
         console.log(velocity(lastVelocity, yAcceleration));
