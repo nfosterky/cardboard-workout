@@ -1,7 +1,11 @@
-;(function(){
+
 
   var camera, scene, renderer;
   var mesh;
+
+  var lastVelocity = 0,
+      lastTime = new Date(),
+      lastPosition = 0;
 
   init();
   animate();
@@ -38,9 +42,7 @@
 
     }
 
-    var lastVelocity = 0,
-      lastTime = new Date(),
-      lastPosition = 0;
+
 
     function velocity (lastVelocity, acceleration, timeStep) {
       return lastVelocity + (acceleration * timeStep);
@@ -101,4 +103,3 @@
       renderer.render( scene, camera );
 
     }
-})();
