@@ -86,11 +86,11 @@
           // o.gamma
         }
 
-        if (o.x.toFixed(1) >= 0.2) {
+        if (o.x.toFixed(1) >= 0.5) {
           console.log("x-acceleration: "  + o.x.toFixed(3));
         }
 
-        if (o.z.toFixed(1) >= 0.2) {
+        if (o.z.toFixed(1) >= 9.5) {
           console.log("z-acceleration: "  + o.z.toFixed(3));
         }
       });
