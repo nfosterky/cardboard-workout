@@ -55,7 +55,7 @@
     // some comments
     function initGyro() {
       console.log("start tracking");
-      gyro.frequency = 100;
+      gyro.frequency = 10;
 
       gyro.startTracking(function(o) {
         var yNoiseUpper = 0.2,
