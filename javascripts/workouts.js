@@ -54,7 +54,7 @@
     }
 
 
-    // initialize gyro
+    // initialize gyro some other comments
     function initGyro() {
       console.log("start tracking");
       gyro.startTracking(function(o) {
