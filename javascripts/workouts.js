@@ -49,7 +49,8 @@
     }
 
     function position (lastPosition, lastVelocity, acceleration, timeStep) {
-      return lastPosition + lastVelocity * timeStep + (0.5 * acceleration * timeStep * timeStep);
+      return lastPosition + lastVelocity * timeStep +
+          (0.5 * acceleration * timeStep * timeStep);
     }
 
     function initGyro() {
@@ -59,6 +60,8 @@
           needsRender = false,
           currentTime = new Date(),
           timeStep = currentTime - lastTime;
+
+        console.log("acceleration: "  + o.y.toFixed(3));
 
         lastVelocity = velocity(lastVelocity, yAcceleration, timeStep);
         lastPosition = position(lastPosition, lastVelocity, yAcceleration, timeStep);
