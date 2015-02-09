@@ -53,6 +53,8 @@
           (0.5 * acceleration * timeStep * timeStep);
     }
 
+
+    // initialize gyro
     function initGyro() {
       console.log("start tracking");
       gyro.startTracking(function(o) {
