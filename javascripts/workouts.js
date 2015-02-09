@@ -57,6 +57,7 @@
 
 
     function initGyro() {
+      var listYAccelerations = [];
       console.log("start tracking");
       gyro.frequency = 10;
 
@@ -71,7 +72,7 @@
           needsRender = false,
           currentTime = new Date();
 
-        var listYAccelerations = [];
+
 
         if (listYAccelerations.length < 100) {
           listYAccelerations.push(yAcceleration);
