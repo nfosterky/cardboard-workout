@@ -209,7 +209,7 @@ function addVideoFeed () {
     }
 
     video = {
-      optional = [{sourceId: videoSource}]
+      optional: [{sourceId: videoSource}]
     };
 
     getUserMedia.call(this, video, function(stream) {
