@@ -13,7 +13,7 @@ var camera, scene, renderer, mesh,
   sphereList = [];
 
 function init () {
-  var tunnel = new THREE.BoxGeometry( 600, 1200, 3000, 50, 50 );
+  var tunnel = new THREE.BoxGeometry( 600, 1200, 3000, 30, 30 );
 
   var material = new THREE.MeshBasicMaterial({
     color: 0xaffff,
