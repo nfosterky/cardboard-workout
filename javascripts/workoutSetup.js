@@ -180,21 +180,24 @@ function sourceSelected (videoSource) {
 }
 
 function addVideoFeed () {
-  var videoSource = null;
+  var videoSource = null,
+    video = document.getElementById("video"),
+    errBack = function(error) {
+      console.log("Video capture error: ", error.code);
+    };
+
+  navigator.getUserMedia = navigator.getUserMedia ||
+      navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
   MediaStreamTrack.getSources(function(sourceInfos) {
-    // var audioSource = null;
-    // var videoSource = null;
+    var sourceInfo,
+      videoObj = {};
 
     for (var i = 0; i != sourceInfos.length; ++i) {
-      var sourceInfo = sourceInfos[i];
-      // if (sourceInfo.kind === 'audio') {
-      //   console.log(sourceInfo.id, sourceInfo.label || 'microphone');
-      //
-      //   audioSource = sourceInfo.id;
-      // } else
+      sourceInfo = sourceInfos[i];
 
       if (sourceInfo.kind === 'video') {
-        console.log(sourceInfo.id, sourceInfo.label || 'camera');
+        console.log(sourceInfo);
         videoSource = sourceInfo.id;
 
       } else {
@@ -202,44 +205,15 @@ function addVideoFeed () {
       }
     }
 
-    // sourceSelected(audioSource, videoSource);
-    // sourceSelected(videoSource);
+    videoObj.optional = [{sourceId: videoSource}]
 
+    navigator.getUserMedia(videoObj, function(stream) {
+      console.log("getUserMedia");
+      // window.stream = stream; // make stream available to console
+      video.src = window.URL.createObjectURL(stream);
+      video.play();
+    }, errBack);
 
-    // // Grab elements, create settings, etc.
-    var video = document.getElementById("video"),
-    videoObj = {
-      "video": true,
-      optional: [{sourceId: videoSource}]
-    },
-    errBack = function(error) {
-      console.log("Video capture error: ", error.code);
-    };
-
-    // Put video listeners into place
-    if (navigator.getUserMedia) { // Standard
-      navigator.getUserMedia(videoObj, function(stream) {
-        video.src = stream;
-        video.play();
-      }, errBack);
-
-    } else if (navigator.webkitGetUserMedia) { // WebKit-prefixed
-      console.log("get video");
-
-      navigator.webkitGetUserMedia(videoObj, function(stream){
-        console.log("navigator video");
-        video.src = window.webkitURL.createObjectURL(stream);
-        video.play();
-        console.log(video);
-      }, errBack);
-
-    } else if (navigator.mozGetUserMedia) { // Firefox-prefixed
-
-      navigator.mozGetUserMedia(videoObj, function(stream){
-        video.src = window.URL.createObjectURL(stream);
-        video.play();
-      }, errBack);
-    }
   });
 
 
