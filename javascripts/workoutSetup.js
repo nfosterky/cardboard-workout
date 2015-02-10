@@ -186,12 +186,15 @@ function addVideoFeed () {
       console.log("Video capture error: ", error.code);
     };
 
-  navigator.getUserMedia = navigator.getUserMedia ||
-      navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+    var getUserMedia = navigator.getUserMedia ? function(a, b, c) {
+          navigator.getUserMedia(a, b, c);
+        } : (navigator.webkitGetUserMedia ? function(a, b, c) {
+              navigator.webkitGetUserMedia(a, b, c);
+            } : null);
 
   MediaStreamTrack.getSources(function(sourceInfos) {
     var sourceInfo,
-      videoObj = {};
+      video;
 
     for (var i = 0; i != sourceInfos.length; ++i) {
       sourceInfo = sourceInfos[i];
@@ -205,9 +208,11 @@ function addVideoFeed () {
       }
     }
 
-    videoObj.optional = [{sourceId: videoSource}]
+    video = {
+      optional = [{sourceId: videoSource}]
+    };
 
-    navigator.getUserMedia(videoObj, function(stream) {
+    getUserMedia.call(this, video, function(stream) {
       console.log("getUserMedia");
       // window.stream = stream; // make stream available to console
       video.src = window.URL.createObjectURL(stream);
