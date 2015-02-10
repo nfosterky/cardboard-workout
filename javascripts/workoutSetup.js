@@ -179,7 +179,7 @@ function initGyro() {
         dAccel = xAccel - lastXAccel;
 
         console.log("dAccel: " + dAccel);
-        if (dAccel >= 5) {
+        if (dAccel >= 3) {
           console.log("Move up");
           if (camera.position.y < cameraMaxY) {
             target.y = cameraMaxY;
@@ -192,7 +192,7 @@ function initGyro() {
           lastTime = currentTime;
 
 
-        } else if (dAccel <= -5){
+        } else if (dAccel <= -3){
           console.log("Move down");
           if (camera.position.y > cameraMinY) {
             target.y = cameraMinY;
