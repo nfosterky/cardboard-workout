@@ -85,11 +85,11 @@
           dAccel = xAccel - lastXAccel;
 
           console.log("dAccel: " + dAccel);
-          if (dAccel >= 5) {
+          if (dAccel >= 3.5) {
             console.log("Move up");
             lastTime = currentTime;
 
-          } else if (dAccel <= -5){
+          } else if (dAccel <= -3.5){
             console.log("Move down");
             lastTime = currentTime;
           }
