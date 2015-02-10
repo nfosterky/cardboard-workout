@@ -209,6 +209,7 @@ function initGyro() {
   });
 }
 
+initGyro();
 
 
 function doTween (position, target, obj, easing, time) {
