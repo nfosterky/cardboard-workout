@@ -1,5 +1,3 @@
-
-
   var camera, scene, renderer;
   var mesh;
 
@@ -12,6 +10,16 @@
   initGyro();
 
   function init() {
+    var geometry = new THREE.BoxGeometry( 200, 200, 400 );
+
+    var material = new THREE.MeshBasicMaterial({
+      color: 0xaff00,
+      wireframe: true
+    });
+
+    mesh = new THREE.Mesh( geometry, material );
+
+    //
 
     renderer = new THREE.WebGLRenderer();
     renderer.setPixelRatio( window.devicePixelRatio );
@@ -21,26 +29,20 @@
     //
 
     camera = new THREE.PerspectiveCamera( 70, window.innerWidth /
-      window.innerHeight, 1, 1000 );
-      camera.position.z = 600;
+        window.innerHeight, 1, 1000 );
 
-      scene = new THREE.Scene();
+    camera.position.z = 800;
 
-      var geometry = new THREE.BoxGeometry( 200, 200, 200 );
+    //
 
-      var texture = THREE.ImageUtils.loadTexture( 'textures/crate.gif' );
-      texture.anisotropy = renderer.getMaxAnisotropy();
+    scene = new THREE.Scene();
+    scene.add( mesh );
 
-      var material = new THREE.MeshBasicMaterial( { map: texture } );
+    //
 
-      mesh = new THREE.Mesh( geometry, material );
-      scene.add( mesh );
+    window.addEventListener( 'resize', onWindowResize, false );
 
-      //
-
-      window.addEventListener( 'resize', onWindowResize, false );
-
-    }
+  }
 
     // acceleration is in (meters/second)^2
     // timestep is in seconds
@@ -49,12 +51,9 @@
     }
 
     function position (lastPosition, lastVelocity, acceleration, timeStep) {
-
       return lastPosition + lastVelocity * timeStep +
           (0.5 * acceleration * timeStep * timeStep);
     }
-
-
 
     function initGyro() {
       var listYAccelerations = [];
@@ -65,25 +64,24 @@
       // some comments
       gyro.startTracking(function(o) {
         var yNoiseUpper = 0.2,
-          yNoiseLower = -0.2;
-
-        var sum;
-
-        var yAcceleration = o.y.toFixed(3),
+          yNoiseLower = -0.2,
+          yAcceleration = o.y.toFixed(3),
           needsRender = false,
-          currentTime = new Date();
+          currentTime = new Date(),
+          sum;
 
-
-// some comments lots of comments
         if (listYAccelerations.length <= 100) {
           listYAccelerations.push(yAcceleration);
+
         } else if (listYAccelerations.length > 100) {
 
           if (noise === false) {
             sum = 0;
+
             for (var i = 0; i < listYAccelerations.length; i++) {
               sum += parseFloat(listYAccelerations[i]);
             }
+
             noise = sum / 100;
             // calibration done
           }
@@ -96,6 +94,7 @@
           if (lastTime && lastTime <= (gyro.frequency * 2) / 1000) {
             timeStep = (currentTime - lastTime) / 1000;
             lastTime = currentTime;
+
           } else {
             lastTime = currentTime;
             timeStep = (currentTime - lastTime) / 1000;
@@ -112,7 +111,7 @@
           console.log("lastVelocity: " + lastVelocity);
           console.log("timeStep: " + timeStep);
           console.log("acceleration: " + yAcceleration);
-          // only do this if acceleration > then noise
+
           lastVelocity = velocity(lastVelocity, yAcceleration, timeStep);
           lastPosition = position(lastPosition, lastVelocity, yAcceleration,
               timeStep);
@@ -150,8 +149,6 @@
     function animate() {
 
       requestAnimationFrame( animate );
-
-
 
       renderer.render( scene, camera );
 
