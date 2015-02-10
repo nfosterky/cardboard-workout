@@ -193,8 +193,7 @@ function addVideoFeed () {
             } : null);
 
   MediaStreamTrack.getSources(function(sourceInfos) {
-    var sourceInfo,
-      video;
+    var sourceInfo;
 
     for (var i = 0; i != sourceInfos.length; ++i) {
       sourceInfo = sourceInfos[i];
