@@ -8,7 +8,7 @@ var cameraMaxY = 400,
   cameraMaxX = 300,
   cameraMinX = -100;
 
-var camera, scene, renderer, mesh,
+var camera, scene, renderer, effect, mesh,
   lastTime = new Date(),
   sphereList = [];
 
@@ -30,8 +30,12 @@ function init () {
 
   renderer = new THREE.WebGLRenderer({ alpha: true });
   renderer.setPixelRatio( window.devicePixelRatio );
-  renderer.setSize( window.innerWidth, window.innerHeight );
+  // renderer.setSize( window.innerWidth, window.innerHeight );
   document.body.appendChild( renderer.domElement );
+
+  effect = new THREE.StereoEffect( renderer );
+  effect.eyeSeparation = 10;
+  effect.setSize( window.innerWidth, window.innerHeight );
 
   //
 
@@ -56,6 +60,7 @@ function init () {
 
 function startObstacles () {
   var lastY = cameraMaxY;
+
   setInterval(function(){
     var geometry = new THREE.SphereGeometry(SPHERE_RADIUS, 5, 5)
 
@@ -109,7 +114,7 @@ function animate() {
 
   deviceControls.update();
 
-  renderer.render( scene, camera );
+  effect.render( scene, camera );
 
 }
 
