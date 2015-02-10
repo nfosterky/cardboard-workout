@@ -168,9 +168,9 @@ function videoError (err) {
 
 function sourceSelected (videoSource) {
   var constraints = {
-    audio: {
-      optional: [{sourceId: audioSource}]
-    },
+    // audio: {
+    //   optional: [{sourceId: audioSource}]
+    // },
     video: {
       optional: [{sourceId: videoSource}]
     }
