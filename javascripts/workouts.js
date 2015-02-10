@@ -10,7 +10,10 @@
   initGyro();
 
   function init() {
-    var geometry = new THREE.BoxGeometry( 200, 200, 400 );
+    // var geometry = new THREE.BoxGeometry( 200, 200, 400 );
+    var radius = 100;
+    var center = new THREE.Vector3(  ); // x, y, z
+    var geometry = new THREE.SphereGeometry(150, 10, 10)
 
     var material = new THREE.MeshBasicMaterial({
       color: 0xaff00,

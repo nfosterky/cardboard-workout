@@ -40,7 +40,6 @@ function init () {
   scene.add( tunnelMesh );
 
   window.addEventListener( 'resize', onWindowResize, false );
-  document.addEventListener( 'keyup', onKeyUp, false);
 
   startObstacles();
   addVideoFeed();
@@ -48,7 +47,11 @@ function init () {
 
 function startObstacles () {
   setInterval(function(){
-    var geometry = new THREE.BoxGeometry( 100, 100, 100 );
+    // var geometry = new THREE.BoxGeometry( 100, 100, 100 );
+
+
+    // args(radius, widthSegments, heightSegments)
+    var geometry = new THREE.SphereGeometry(150, 10, 10)
 
     var material = new THREE.MeshBasicMaterial({
       color: 0xaff00,
@@ -57,8 +60,8 @@ function startObstacles () {
     });
 
     mesh = new THREE.Mesh( geometry, material );
-    mesh.position.y = 400;
-    mesh.position.z = -1500;
+    // mesh.position.y = 400;
+    // mesh.position.z = -1500;
 
     var position = {
         x: mesh.position.x,
@@ -101,51 +104,6 @@ var cameraMaxY = 400,
   cameraMinY = 200,
   cameraMaxX = 300,
   cameraMinX = -100;
-
-function onKeyUp (event) {
-  var increment = 100,
-    position = {
-      x: camera.position.x,
-      y: camera.position.y,
-      z: camera.position.z
-    },
-    target = {
-      x: 0,
-      y: 0,
-      z: 0
-    },
-    tween;
-
-  event.preventDefault();
-
-  switch(event.keyCode) {
-    case 38: //Up
-      // if camera not at top position
-      if (camera.position.y < cameraMaxY) {
-        target.y = cameraMaxY;
-        target.z = camera.position.z;
-
-        doTween(position, target, camera, TWEEN.Easing.Circular.Out, increment);
-      }
-      break;
-
-    case 40: //Down
-      if (camera.position.y > cameraMinY) {
-        target.y = cameraMinY;
-        target.z = camera.position.z;
-
-        doTween(position, target, camera, TWEEN.Easing.Circular.Out, increment);
-      }
-      break;
-
-    // case 39: //Right
-    //   break;
-
-    // case 37:// left
-    //   break;
-  }
-
-}
 
 function initGyro() {
   var increment = 100,
@@ -268,6 +226,9 @@ function addVideoFeed () {
 
 }
 
+function addCollisionDetection () {
+
+}
 
 init();
 animate();
