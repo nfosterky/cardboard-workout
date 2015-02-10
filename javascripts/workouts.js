@@ -67,76 +67,96 @@
     function calibrateNoise(axis) {
     }
 
+    var lastXAccel = false;
+
     // some comments
     gyro.startTracking(function(o) {
       var yAcceleration = o.y.toFixed(3),
+        xAccel = parseFloat(o.x.toFixed(3)),
+        dAccel,
         needsRender = false,
         currentTime = new Date(),
         sum;
 
       console.log("gyro");
 
-      if (listYAccelerations.length <= 100) {
-        listYAccelerations.push(yAcceleration);
+      if (lastXAccel !== false) {
+        dAccel = xAccel - lastXAccel;
 
-      } else if (listYAccelerations.length > 100) {
-
-        if (noise === false) {
-          sum = 0;
-
-          for (var i = 0; i < listYAccelerations.length; i++) {
-            sum += parseFloat(listYAccelerations[i]);
-          }
-
-          noise = sum / 100;
-          // calibration done
+        console.log(dAccel);
+        if (dAccel >= 2) {
+          console.log("Move up");
+        } else if (dAccel <= 2){
+          console.log("Move down");
         }
-
-        // dividing by 1000 to decrease velocity by 1000 and position by
-        // 100000
-        // time is in seconds
-        // if there is no last time
-        // or if last time is greater than frequency
-        if (lastTime && lastTime <= (gyro.frequency * 2) / 1000) {
-          timeStep = (currentTime - lastTime) / 1000;
-          lastTime = currentTime;
-
-        } else {
-          lastTime = currentTime;
-          timeStep = (currentTime - lastTime) / 1000;
-        }
-
-        yAcceleration -= noise;
-
-        if (yAcceleration <= 0.05 &&
-            yAcceleration >= -0.05) {
-
-          yAcceleration = 0;
-        }
-        console.log("lastPosition: " + lastPosition);
-        console.log("lastVelocity: " + lastVelocity);
-        console.log("timeStep: " + timeStep);
-        console.log("acceleration: " + yAcceleration);
-
-        lastVelocity = velocity(lastVelocity, yAcceleration, timeStep);
-        lastPosition = position(lastPosition, lastVelocity, yAcceleration,
-            timeStep);
-
-        // if (newY <= 400 && newY >= -400) {
-        //   mesh.position.y = newY;
-        //   needsRender = true;
-        // }
-        // if (needsRender) {
-        //   renderer.render( scene, camera );
-        //   console.log(mesh.position.y);
-        // }
-
+        
+        lastXAccel = xAccel;
       }
 
-      if (parseFloat(o.x.toFixed(1)) >= 0.5 ||
-          parseFloat(o.x.toFixed(1)) <= -0.5) {
-        console.log("x-acceleration: "  + o.x.toFixed(3));
-      }
+
+      // if (listYAccelerations.length <= 100) {
+      //   listYAccelerations.push(yAcceleration);
+      //
+      // } else if (listYAccelerations.length > 100) {
+      //
+      //   if (noise === false) {
+      //     sum = 0;
+      //
+      //     for (var i = 0; i < listYAccelerations.length; i++) {
+      //       sum += parseFloat(listYAccelerations[i]);
+      //     }
+      //
+      //     noise = sum / 100;
+      //     // calibration done
+      //   }
+      //
+      //   // dividing by 1000 to decrease velocity by 1000 and position by
+      //   // 100000
+      //   // time is in seconds
+      //   // if there is no last time
+      //   // or if last time is greater than frequency
+      //   if (lastTime && lastTime <= (gyro.frequency * 2) / 1000) {
+      //     timeStep = (currentTime - lastTime) / 1000;
+      //     lastTime = currentTime;
+      //
+      //   } else {
+      //     lastTime = currentTime;
+      //     timeStep = (currentTime - lastTime) / 1000;
+      //   }
+      //
+      //   yAcceleration -= noise;
+      //
+      //   if (yAcceleration <= 0.05 &&
+      //       yAcceleration >= -0.05) {
+      //
+      //     yAcceleration = 0;
+      //   }
+      //   console.log("lastPosition: " + lastPosition);
+      //   console.log("lastVelocity: " + lastVelocity);
+      //   console.log("timeStep: " + timeStep);
+      //   console.log("acceleration: " + yAcceleration);
+      //
+      //   lastVelocity = velocity(lastVelocity, yAcceleration, timeStep);
+      //   lastPosition = position(lastPosition, lastVelocity, yAcceleration,
+      //       timeStep);
+      //
+      //   // if (newY <= 400 && newY >= -400) {
+      //   //   mesh.position.y = newY;
+      //   //   needsRender = true;
+      //   // }
+      //   // if (needsRender) {
+      //   //   renderer.render( scene, camera );
+      //   //   console.log(mesh.position.y);
+      //   // }
+      //
+      // }
+
+      // if (parseFloat(o.x.toFixed(1)) >= 9.7 ||
+      //     parseFloat(o.x.toFixed(1)) <= -0.5) {
+      //
+      //
+      //   console.log("x-acceleration: "  + o.x.toFixed(3));
+      // }
 
       if (parseFloat(o.z.toFixed(1)) >= 9.8) {
         console.log("z-acceleration: "  + o.z.toFixed(3));
