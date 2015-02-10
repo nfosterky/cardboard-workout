@@ -1,5 +1,9 @@
 // setup scene for workout
 var SPHERE_RADIUS = 50;
+var cameraMaxY = 400,
+  cameraMinY = 200,
+  cameraMaxX = 300,
+  cameraMinX = -100;
 
 var camera, scene, renderer, mesh,
   lastTime = new Date(),
@@ -21,9 +25,7 @@ function init () {
 
   //
 
-  renderer = new THREE.WebGLRenderer({
-    alpha: true
-  });
+  renderer = new THREE.WebGLRenderer({ alpha: true });
   renderer.setPixelRatio( window.devicePixelRatio );
   renderer.setSize( window.innerWidth, window.innerHeight );
   document.body.appendChild( renderer.domElement );
@@ -33,7 +35,7 @@ function init () {
   camera = new THREE.PerspectiveCamera( 70, window.innerWidth /
     window.innerHeight, 1, 4000 );
 
-  camera.position.y = 300;
+  camera.position.y = 400;
   camera.position.z = 100;
 
   //
@@ -72,8 +74,8 @@ function startObstacles () {
         z: mesh.position.z
       },
       target = {
-        x: 0,
-        y: 0,
+        x: mesh.position.x,
+        y: mesh.position.y,
         z: 3000
       };
 
@@ -106,11 +108,6 @@ function animate() {
 
 }
 
-var cameraMaxY = 400,
-  cameraMinY = 200,
-  cameraMaxX = 300,
-  cameraMinX = -100;
-
 function initGyro() {
   var increment = 100,
     position = {
@@ -131,7 +128,6 @@ function initGyro() {
 
   // some comments
   gyro.startTracking(function(o) {
-    console.log("start tracking");
     var xAccel = parseFloat(o.x.toFixed(3)),
       currentTime = new Date(),
       dAccel, timeElapsed;
@@ -139,12 +135,13 @@ function initGyro() {
     if (lastXAccel !== false && lastTime !== false) {
       timeElapsed = currentTime - lastTime;
 
+      // 400 milliseconds
       if (timeElapsed > 400) {
         dAccel = xAccel - lastXAccel;
 
-        console.log("dAccel: " + dAccel);
         if (dAccel >= 3) {
-          console.log("Move up");
+
+          // if camera not at top, move to top
           if (camera.position.y < cameraMaxY) {
             target.y = cameraMaxY;
             target.z = camera.position.z;
@@ -156,8 +153,9 @@ function initGyro() {
           lastTime = currentTime;
 
 
-        } else if (dAccel <= -3){
-          console.log("Move down");
+        } else if (dAccel <= -3) {
+
+          // if camera not at bottom, move to bottom
           if (camera.position.y > cameraMinY) {
             target.y = cameraMinY;
             target.z = camera.position.z;
@@ -244,14 +242,10 @@ function checkForCollision () {
   for (var i = 0; i < sphereList.length; i++) {
     sphere = sphereList[i];
 
-    if (distance(camera.position, sphere.position) <= (SPHERE_RADIUS * 2)) {
-      console.log("collision");
+    if (distance(camera.position, sphere.position) <= SPHERE_RADIUS) {
       sphere.material.color.r = 255;
       sphere.material.color.g = 0;
-      console.log(sphere);
     }
-
-    console.log("distance" + i +  ": " + distance(camera.position, sphere.position));
   }
 }
 
