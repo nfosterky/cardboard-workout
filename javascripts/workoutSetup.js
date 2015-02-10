@@ -1,6 +1,8 @@
 // setup scene for workout
 var SPHERE_RADIUS = 50;
 
+var deviceControls;
+
 var cameraMaxY = 400,
   cameraMinY = 200,
   cameraMaxX = 300,
@@ -12,6 +14,8 @@ var camera, scene, renderer, mesh,
 
 function init () {
   var tunnel = new THREE.BoxGeometry( 600, 1200, 3000 );
+
+  deviceControls = new THREE.DeviceOrientationControls( camera );
 
   var material = new THREE.MeshBasicMaterial({
     color: 0xaffff,
@@ -99,6 +103,8 @@ function animate() {
   TWEEN.update();
 
   checkForCollision();
+
+  deviceControls.update();
 
   renderer.render( scene, camera );
 
