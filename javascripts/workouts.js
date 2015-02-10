@@ -75,17 +75,17 @@
 
       if (lastXAccel !== false && lastTime !== false) {
         timeElapsed = currentTime - lastTime;
-        console.log(timeElapsed);
+        console.log("timeElapsed: " + timeElapsed);
 
-        if (timeElapsed > 250) {
+        if (timeElapsed > 750) {
           dAccel = xAccel - lastXAccel;
 
-          console.log(dAccel);
-          if (dAccel >= 2) {
+          console.log("dAccel: " + dAccel);
+          if (dAccel >= 5) {
             console.log("Move up");
             lastTime = currentTime;
 
-          } else if (dAccel <= -2){
+          } else if (dAccel <= -5){
             console.log("Move down");
             lastTime = currentTime;
           }

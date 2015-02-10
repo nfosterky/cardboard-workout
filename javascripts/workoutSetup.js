@@ -119,11 +119,12 @@ function onKeyUp (event) {
 
   switch(event.keyCode) {
     case 38: //Up
+      // if camera not at top position
       if (camera.position.y < cameraMaxY) {
         target.y = cameraMaxY;
         target.z = camera.position.z;
 
-        doTween(position, target, camera, TWEEN.Easing.Circular.Out, 100);
+        doTween(position, target, camera, TWEEN.Easing.Circular.Out, increment);
       }
       break;
 
@@ -132,7 +133,7 @@ function onKeyUp (event) {
         target.y = cameraMinY;
         target.z = camera.position.z;
 
-        doTween(position, target, camera, TWEEN.Easing.Circular.Out, 100);
+        doTween(position, target, camera, TWEEN.Easing.Circular.Out, increment);
       }
       break;
 
@@ -144,6 +145,71 @@ function onKeyUp (event) {
   }
 
 }
+
+function initGyro() {
+  var increment = 100,
+    position = {
+      x: camera.position.x,
+      y: camera.position.y,
+      z: camera.position.z
+    },
+    target = {
+      x: 0,
+      y: 0,
+      z: 0
+    },
+    tween;
+
+  var lastXAccel = false;
+
+  gyro.frequency = 100;
+
+  // some comments
+  gyro.startTracking(function(o) {
+    console.log("start tracking");
+    var xAccel = parseFloat(o.x.toFixed(3)),
+      currentTime = new Date(),
+      dAccel, timeElapsed;
+
+    if (lastXAccel !== false && lastTime !== false) {
+      timeElapsed = currentTime - lastTime;
+
+      if (timeElapsed > 750) {
+        dAccel = xAccel - lastXAccel;
+
+        console.log("dAccel: " + dAccel);
+        if (dAccel >= 5) {
+          console.log("Move up");
+          if (camera.position.y < cameraMaxY) {
+            target.y = cameraMaxY;
+            target.z = camera.position.z;
+
+            doTween(position, target, camera, TWEEN.Easing.Circular.Out,
+                increment);
+          }
+
+          lastTime = currentTime;
+
+
+        } else if (dAccel <= -5){
+          console.log("Move down");
+          if (camera.position.y > cameraMinY) {
+            target.y = cameraMinY;
+            target.z = camera.position.z;
+
+            doTween(position, target, camera, TWEEN.Easing.Circular.Out,
+                increment);
+          }
+
+          lastTime = currentTime;
+        }
+      }
+    }
+    lastXAccel = xAccel;
+  });
+}
+
+
 
 function doTween (position, target, obj, easing, time) {
   var tween = new TWEEN.Tween(position).to(target, time);
