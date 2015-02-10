@@ -1,6 +1,7 @@
 // setup scene for workout
 
-var camera, scene, renderer, mesh;
+var camera, scene, renderer, mesh,
+  lastTime = new Date();
 
 function init () {
   var tunnel = new THREE.BoxGeometry( 600, 1200, 3000 );
