@@ -175,7 +175,7 @@ function initGyro() {
     if (lastXAccel !== false && lastTime !== false) {
       timeElapsed = currentTime - lastTime;
 
-      if (timeElapsed > 300) {
+      if (timeElapsed > 400) {
         dAccel = xAccel - lastXAccel;
 
         console.log("dAccel: " + dAccel);
@@ -210,9 +210,6 @@ function initGyro() {
   });
 }
 
-
-
-
 function doTween (position, target, obj, easing, time) {
   var tween = new TWEEN.Tween(position).to(target, time);
 
@@ -227,40 +224,17 @@ function doTween (position, target, obj, easing, time) {
   tween.start();
 }
 
-function videoSuccess (stream) {
-  video.src = stream;
-  video.play();
-}
-
-function videoError (err) {
-  console.log(err);
-}
-
-function sourceSelected (videoSource) {
-  var constraints = {
-    // audio: {
-    //   optional: [{sourceId: audioSource}]
-    // },
-    video: {
-      optional: [{sourceId: videoSource}]
-    }
-  };
-
-  navigator.getUserMedia(constraints, videoSuccess, videoError);
-}
-
 function addVideoFeed () {
   var videoSource = null,
     video = document.getElementById("video"),
     errBack = function(error) {
-      console.log("Video capture error: ", error.code);
+      console.log("Video capture error: ", error);
     };
 
-    var getUserMedia = navigator.getUserMedia ? function(a, b, c) {
-          navigator.getUserMedia(a, b, c);
-        } : (navigator.webkitGetUserMedia ? function(a, b, c) {
-              navigator.webkitGetUserMedia(a, b, c);
-            } : null);
+  var getUserMedia = navigator.getUserMedia ?
+      function(a, b, c) { navigator.getUserMedia(a, b, c); } :
+      (navigator.webkitGetUserMedia ?
+          function(a, b, c) { navigator.webkitGetUserMedia(a, b, c); } : null);
 
   MediaStreamTrack.getSources(function(sourceInfos) {
     var sourceInfo;
