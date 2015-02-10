@@ -2,7 +2,7 @@
   var mesh;
 
   var lastVelocity = 0,
-      lastTime = false,
+      lastTime = new Date(),
       lastPosition = 0;
 
   init();
@@ -59,13 +59,7 @@
     var listYAccelerations = [],
       noise = false;
 
-    gyro.frequency = 1000;
-
-    function trackAxis(axis) {
-    }
-
-    function calibrateNoise(axis) {
-    }
+    gyro.frequency = 100;
 
     var lastXAccel = false;
 
@@ -76,23 +70,28 @@
         dAccel,
         needsRender = false,
         currentTime = new Date(),
+        timeElapsed,
         sum;
 
-      console.log("gyro");
+      if (lastXAccel !== false && lastTime !== false) {
+        timeElapsed = currentTime - lastTime;
+        console.log(timeElapsed);
 
-      if (lastXAccel !== false) {
-        dAccel = xAccel - lastXAccel;
+        if (timeElapsed > 250) {
+          dAccel = xAccel - lastXAccel;
 
-        console.log(dAccel);
-        if (dAccel >= 2) {
-          console.log("Move up");
-        } else if (dAccel <= 2){
-          console.log("Move down");
+          console.log(dAccel);
+          if (dAccel >= 2) {
+            console.log("Move up");
+            lastTime = currentTime;
+
+          } else if (dAccel <= -2){
+            console.log("Move down");
+            lastTime = currentTime;
+          }
         }
-        
-        lastXAccel = xAccel;
       }
-
+      lastXAccel = xAccel;
 
       // if (listYAccelerations.length <= 100) {
       //   listYAccelerations.push(yAcceleration);
