@@ -209,7 +209,7 @@ function addVideoFeed () {
     // // Grab elements, create settings, etc.
     var video = document.getElementById("video"),
     videoObj = {
-      // "video": true
+      "video": true,
       optional: [{sourceId: videoSource}]
     },
     errBack = function(error) {
