@@ -57,6 +57,7 @@ function init () {
 }
 
 function startObstacles () {
+  var lastY = cameraMaxY;
   setInterval(function(){
     var geometry = new THREE.SphereGeometry(SPHERE_RADIUS, 10, 10)
 
@@ -67,7 +68,9 @@ function startObstacles () {
     });
 
     mesh = new THREE.Mesh( geometry, material );
-    mesh.position.y = 400;
+    mesh.position.y = lastY === cameraMaxY ? cameraMinY : cameraMaxY;
+    lastY = mesh.position.y;
+
     mesh.position.z = -1500;
 
     var position = {
