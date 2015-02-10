@@ -212,7 +212,7 @@ function addVideoFeed () {
       optional: [{sourceId: videoSource}]
     };
 
-    getUserMedia.call(this, video, function(stream) {
+    getUserMedia.call(this, {video: video}, function(stream) {
       console.log("getUserMedia");
       // window.stream = stream; // make stream available to console
       video.src = window.URL.createObjectURL(stream);
