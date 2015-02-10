@@ -209,7 +209,7 @@ function initGyro() {
   });
 }
 
-initGyro();
+
 
 
 function doTween (position, target, obj, easing, time) {
@@ -296,3 +296,4 @@ function addVideoFeed () {
 
 init();
 animate();
+initGyro();
