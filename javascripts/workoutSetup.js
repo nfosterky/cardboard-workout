@@ -13,7 +13,7 @@ var camera, scene, renderer, mesh,
   sphereList = [];
 
 function init () {
-  var tunnel = new THREE.BoxGeometry( 600, 1200, 3000, 30, 30 );
+  var tunnel = new THREE.BoxGeometry( 600, 1200, 3000, 10, 10 );
 
   var material = new THREE.MeshBasicMaterial({
     color: 0xaffff,
@@ -57,7 +57,7 @@ function init () {
 function startObstacles () {
   var lastY = cameraMaxY;
   setInterval(function(){
-    var geometry = new THREE.SphereGeometry(SPHERE_RADIUS, 10, 10)
+    var geometry = new THREE.SphereGeometry(SPHERE_RADIUS, 5, 5)
 
     var material = new THREE.MeshBasicMaterial({
       color: 0xaff00,
