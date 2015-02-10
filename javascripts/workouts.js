@@ -56,18 +56,15 @@
   }
 
   function initGyro() {
-    var listYAccelerations = [];
-    var noise = false;
-    console.log("start tracking");
-    gyro.frequency = 10000;
+    var listYAccelerations = [],
+      noise = false;
 
+    gyro.frequency = 1000;
 
     function trackAxis(axis) {
-
     }
 
     function calibrateNoise(axis) {
-
     }
 
     // some comments
@@ -76,6 +73,8 @@
         needsRender = false,
         currentTime = new Date(),
         sum;
+
+      console.log("gyro");
 
       if (listYAccelerations.length <= 100) {
         listYAccelerations.push(yAcceleration);
