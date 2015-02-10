@@ -1,3 +1,5 @@
+// setup scene for workout
+
 var camera, scene, renderer, mesh;
 
 function init () {
