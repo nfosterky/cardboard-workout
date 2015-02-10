@@ -175,7 +175,7 @@ function initGyro() {
     if (lastXAccel !== false && lastTime !== false) {
       timeElapsed = currentTime - lastTime;
 
-      if (timeElapsed > 750) {
+      if (timeElapsed > 600) {
         dAccel = xAccel - lastXAccel;
 
         console.log("dAccel: " + dAccel);
