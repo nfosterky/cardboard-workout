@@ -42,7 +42,8 @@
     scene.add( mesh );
 
     //
-
+    mesh.material.color.r = 255;
+    console.log(mesh);
     window.addEventListener( 'resize', onWindowResize, false );
 
   }

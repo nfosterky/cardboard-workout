@@ -1,7 +1,9 @@
 // setup scene for workout
+var SPHERE_RADIUS = 50;
 
 var camera, scene, renderer, mesh,
-  lastTime = new Date();
+  lastTime = new Date(),
+  sphereList = [];
 
 function init () {
   var tunnel = new THREE.BoxGeometry( 600, 1200, 3000 );
@@ -31,7 +33,7 @@ function init () {
   camera = new THREE.PerspectiveCamera( 70, window.innerWidth /
     window.innerHeight, 1, 4000 );
 
-  camera.position.y = 400;
+  camera.position.y = 300;
   camera.position.z = 100;
 
   //
@@ -46,12 +48,13 @@ function init () {
 }
 
 function startObstacles () {
+
   setInterval(function(){
     // var geometry = new THREE.BoxGeometry( 100, 100, 100 );
 
 
     // args(radius, widthSegments, heightSegments)
-    var geometry = new THREE.SphereGeometry(50, 10, 10)
+    var geometry = new THREE.SphereGeometry(SPHERE_RADIUS, 10, 10)
 
     var material = new THREE.MeshBasicMaterial({
       color: 0xaff00,
@@ -75,10 +78,11 @@ function startObstacles () {
       };
 
     scene.add( mesh );
+    sphereList.push(mesh);
 
     doTween(position, target, mesh, TWEEN.Easing.Circular.Out, 100000);
 
-  }, Math.random() * 100 + 3000);
+  }, 5000);
 }
 
 function onWindowResize() {
@@ -95,6 +99,8 @@ function animate() {
   requestAnimationFrame( animate );
 
   TWEEN.update();
+
+  checkForCollision();
 
   renderer.render( scene, camera );
 
@@ -226,9 +232,30 @@ function addVideoFeed () {
 
 }
 
-function addCollisionDetection () {
-
+function distance(obj1, obj2) {
+  return Math.sqrt(Math.pow(obj1.x - obj2.x, 2) +
+      Math.pow(obj1.y - obj2.y, 2) +
+      Math.pow(obj1.z - obj2.z, 2));
 }
+
+function checkForCollision () {
+  var sphere;
+
+  for (var i = 0; i < sphereList.length; i++) {
+    sphere = sphereList[i];
+
+    if (distance(camera.position, sphere.position) <= (SPHERE_RADIUS * 2)) {
+      console.log("collision");
+      sphere.material.color.r = 255;
+      sphere.material.color.g = 0;
+      console.log(sphere);
+    }
+
+    console.log("distance" + i +  ": " + distance(camera.position, sphere.position));
+  }
+}
+
+checkForCollision();
 
 init();
 animate();
