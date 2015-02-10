@@ -51,7 +51,7 @@ function startObstacles () {
 
 
     // args(radius, widthSegments, heightSegments)
-    var geometry = new THREE.SphereGeometry(150, 10, 10)
+    var geometry = new THREE.SphereGeometry(50, 10, 10)
 
     var material = new THREE.MeshBasicMaterial({
       color: 0xaff00,
@@ -60,8 +60,8 @@ function startObstacles () {
     });
 
     mesh = new THREE.Mesh( geometry, material );
-    // mesh.position.y = 400;
-    // mesh.position.z = -1500;
+    mesh.position.y = 400;
+    mesh.position.z = -1500;
 
     var position = {
         x: mesh.position.x,
