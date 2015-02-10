@@ -143,7 +143,7 @@ function onKeyUp (event) {
 
 }
 
-function doTween(position, target, obj, easing, time) {
+function doTween (position, target, obj, easing, time) {
   var tween = new TWEEN.Tween(position).to(target, time);
 
   tween.onUpdate(function(){
@@ -157,7 +157,16 @@ function doTween(position, target, obj, easing, time) {
   tween.start();
 }
 
-function sourceSelected(audioSource, videoSource) {
+function videoSuccess (stream) {
+  video.src = stream;
+  video.play();
+}
+
+function videoError (err) {
+  console.log(err);
+}
+
+function sourceSelected (videoSource) {
   var constraints = {
     audio: {
       optional: [{sourceId: audioSource}]
@@ -167,7 +176,7 @@ function sourceSelected(audioSource, videoSource) {
     }
   };
 
-  navigator.getUserMedia(constraints, successCallback, errorCallback);
+  navigator.getUserMedia(constraints, videoSuccess, videoError);
 }
 
 function addVideoFeed () {
