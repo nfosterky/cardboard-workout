@@ -1,5 +1,6 @@
 // setup scene for workout
 var SPHERE_RADIUS = 50;
+
 var cameraMaxY = 400,
   cameraMinY = 200,
   cameraMaxX = 300,
@@ -50,12 +51,7 @@ function init () {
 }
 
 function startObstacles () {
-
   setInterval(function(){
-    // var geometry = new THREE.BoxGeometry( 100, 100, 100 );
-
-
-    // args(radius, widthSegments, heightSegments)
     var geometry = new THREE.SphereGeometry(SPHERE_RADIUS, 10, 10)
 
     var material = new THREE.MeshBasicMaterial({
@@ -84,7 +80,7 @@ function startObstacles () {
 
     doTween(position, target, mesh, TWEEN.Easing.Circular.Out, 100000);
 
-  }, 5000);
+  }, 6000);
 }
 
 function onWindowResize() {
@@ -248,8 +244,6 @@ function checkForCollision () {
     }
   }
 }
-
-checkForCollision();
 
 init();
 animate();
