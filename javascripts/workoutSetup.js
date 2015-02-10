@@ -157,10 +157,12 @@ function initGyro() {
             target.z = camera.position.z;
 
             doTween(position, target, camera, TWEEN.Easing.Circular.Out,
-                increment);
+                300);
+
+            lastTime = currentTime;
           }
 
-          lastTime = currentTime;
+
 
 
         } else if (dAccel <= -3) {
@@ -171,10 +173,12 @@ function initGyro() {
             target.z = camera.position.z;
 
             doTween(position, target, camera, TWEEN.Easing.Circular.Out,
-                increment);
+                300);
+
+            lastTime = currentTime;
           }
 
-          lastTime = currentTime;
+
         }
       }
     }
