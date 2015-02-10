@@ -133,7 +133,8 @@
 
       }
 
-      if (parseFloat(o.x.toFixed(1)) >= 0.5) {
+      if (parseFloat(o.x.toFixed(1)) >= 0.5 ||
+          parseFloat(o.x.toFixed(1)) <= -0.5) {
         console.log("x-acceleration: "  + o.x.toFixed(3));
       }
 
