@@ -15,7 +15,7 @@ var camera, scene, renderer, mesh,
 function init () {
   var tunnel = new THREE.BoxGeometry( 600, 1200, 3000 );
 
-  deviceControls = new THREE.DeviceOrientationControls( camera );
+
 
   var material = new THREE.MeshBasicMaterial({
     color: 0xaffff,
@@ -44,6 +44,8 @@ function init () {
   camera.position.z = 100;
 
   //
+
+  deviceControls = new THREE.DeviceOrientationControls( camera );
 
   scene = new THREE.Scene();
   scene.add( tunnelMesh );
