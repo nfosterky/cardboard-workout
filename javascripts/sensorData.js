@@ -35,17 +35,19 @@ window.onload = function() {
         t = new Date(),
         timestep = t - lastT;
 
-      if (parseFloat(a) >= 0.1 || parseFloat(a) <= -0.1) {
-        lastT = t;
-        lastPosition = position(lastPosition, lastVelocity, a,
-          timestep);
-
-        lastVelocity = velocity(lastVelocity, a, timestep);
-
-        xA.innerHTML = a;
-        xV.innerHTML = lastVelocity;
-        xP.innerHTML = lastPosition;
+      if (parseFloat(a) <= 0.1 || parseFloat(a) >= -0.1) {
+        a = 0;
       }
+      
+      lastT = t;
+      lastPosition = position(lastPosition, lastVelocity, a,
+        timestep);
+
+      lastVelocity = velocity(lastVelocity, a, timestep);
+
+      xA.innerHTML = a;
+      xV.innerHTML = lastVelocity;
+      xP.innerHTML = lastPosition;
     });
   }
 
