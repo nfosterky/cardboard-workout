@@ -84,15 +84,15 @@ function startObstacles () {
       target = {
         x: mesh.position.x,
         y: mesh.position.y,
-        z: 3000
+        z: 100
       };
 
     scene.add( mesh );
     sphereList.push(mesh);
 
-    doTween(position, target, mesh, TWEEN.Easing.Circular.Out, 100000);
+    doTween(position, target, mesh, TWEEN.Easing.Circular.Out, 1000);
 
-  }, 6000);
+  }, 1000);
 }
 
 function onWindowResize() {
@@ -184,12 +184,22 @@ function initGyro() {
 }
 
 function doTween (position, target, obj, easing, time) {
-  var tween = new TWEEN.Tween(position).to(target, time);
+  function handleComplete (e) {
+
+    console.log("complete");
+    console.log(e);
+    console.log(this);
+
+  }
+  var tween = new TWEEN.Tween(position)
+      .to(target, time);
+      // .call(handleComplete);
 
   tween.onUpdate(function(){
     obj.position.x = position.x;
     obj.position.y = position.y;
     obj.position.z = position.z;
+
   });
 
   tween.easing(easing);
@@ -230,7 +240,7 @@ function addVideoFeed () {
       }
     }, function(stream) {
       console.log("getUserMedia");
-      
+
       // window.stream = stream; // make stream available to console
       var url = window.URL.createObjectURL(stream);
       videoLeft.src = url;
@@ -240,7 +250,6 @@ function addVideoFeed () {
     }, errBack);
 
   });
-
 
 }
 
@@ -261,6 +270,14 @@ function checkForCollision () {
       sphere.material.color.g = 0;
     }
   }
+}
+
+function removeObject(object) {
+  console.log("remove object");
+  console.log(object);
+  var selectedObject = scene.getObjectByName(object.name);
+  scene.remove( selectedObject );
+  // animate();
 }
 
 init();
