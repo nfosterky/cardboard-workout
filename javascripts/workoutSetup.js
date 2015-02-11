@@ -176,8 +176,6 @@ function initGyro() {
 
             lastTime = currentTime;
           }
-
-
         }
       }
     }
@@ -201,7 +199,8 @@ function doTween (position, target, obj, easing, time) {
 
 function addVideoFeed () {
   var videoSource = null,
-    video = document.getElementById("video"),
+    videoLeft = document.getElementById("video_left"),
+    videoRight = document.getElementById("video_right"),
     errBack = function(error) {
       console.log("Video capture error: ", error);
     };
@@ -218,7 +217,6 @@ function addVideoFeed () {
       sourceInfo = sourceInfos[i];
 
       if (sourceInfo.kind === 'video') {
-        console.log(sourceInfo);
         videoSource = sourceInfo.id;
 
       } else {
@@ -234,8 +232,11 @@ function addVideoFeed () {
       console.log("getUserMedia");
       console.log(video);
       // window.stream = stream; // make stream available to console
-      video.src = window.URL.createObjectURL(stream);
-      video.play();
+      var url = window.URL.createObjectURL(stream);
+      videoLeft.src = url;
+      videoRight.src = url;
+      videoLeft.play();
+      videoRight.play();
     }, errBack);
 
   });

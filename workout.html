@@ -10,9 +10,15 @@
     overflow: hidden;
   }
   video {
-    width: 100%;
+    width: 50%;
     height: 100%;
     position: absolute;
+  }
+  #video_left {
+    margin-right: 49%
+  }
+  #video_right {
+    margin-left: 49%
   }
   canvas {
     width: 100%;
@@ -22,7 +28,8 @@
   </style>
 </head>
 <body>
-  <video id="video" autoplay></video>
+  <video id="video_left" autoplay></video>
+  <video id="video_right" autoplay></video>
   <script src="javascripts/libs/three.min.js"></script>
   <script src="javascripts/libs/DeviceOrientationControls.js"></script>
   <script src="javascripts/libs/StereoEffect.js"></script>
