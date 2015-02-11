@@ -33,11 +33,13 @@ window.onload = function() {
         t = new Date(),
         timestep = t - lastT;
 
-      lastT = t;
-      lastPosition = position(lastPosition, lastVelocity, a,
+      if (parseFloat(a) >= 0.1 || parseFloat(a) <= -0.1) {
+        lastT = t;
+        lastPosition = position(lastPosition, lastVelocity, a,
           timestep);
 
-      lastVelocity = velocity(lastVelocity, a, timestep);
+        lastVelocity = velocity(lastVelocity, a, timestep);
+      }
 
       xA.innerHTML = a;
       xV.innerHTML = lastVelocity;
