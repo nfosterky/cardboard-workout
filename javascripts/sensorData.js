@@ -29,6 +29,7 @@ window.onload = function() {
       lastXA = false;
 
     // set frequency of measurements in milliseconds
+    // some more comments
     gyro.frequency = 100;
 
     gyro.startTracking(function(o) {
