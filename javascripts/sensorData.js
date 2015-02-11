@@ -22,6 +22,31 @@ window.onload = function() {
   }
 
 
+  var values = [];
+
+  function smooth (value) {
+    var range = 6,
+      numValues = values.length,
+      valuesToAverage,
+      startIndex, endIndex,
+      sum = 0;
+
+    if (values.length >= range) {
+      startIndex = numValues - 6;
+      endIndex = numValues - 1;
+
+      valuesToAverage = values.slice(startIndex, endIndex);
+
+      for (var i = 0; i < valuesToAverage.length; i++) {
+        sum += valuesToAverage[i];
+      }
+
+      return sum / range;
+    }
+
+    return -1;
+  }
+
   // initialize gyro from gyro.js
   function initGyro() {
     var listYAccelerations = [],
@@ -30,17 +55,18 @@ window.onload = function() {
 
     // set frequency of measurements in milliseconds
     // some more comments
-    gyro.frequency = 100;
+    gyro.frequency = 10;
 
     gyro.startTracking(function(o) {
       var a = o.x.toFixed(3),
         t = new Date(),
         timestep = t - lastT;
 
-      if (parseFloat(a) <= 0.1 && parseFloat(a) >= -0.1) {
-        a = 0;
-        lastVelocity = 0;
-      }
+      // if (parseFloat(a) <= 0.1 && parseFloat(a) >= -0.1) {
+      //   a = 0;
+      //   lastVelocity = 0;
+      // }
+      a = smooth(a);
 
       lastT = t;
       lastPosition = position(lastPosition, lastVelocity, a,
