@@ -149,6 +149,7 @@ function initGyro() {
       if (timeElapsed > 400) {
         dAccel = xAccel - lastXAccel;
 
+        // acceleration up
         if (dAccel >= 3) {
 
           // if camera not at top, move to top
@@ -162,9 +163,7 @@ function initGyro() {
             lastTime = currentTime;
           }
 
-
-
-
+        // acceleration down
         } else if (dAccel <= -3) {
 
           // if camera not at bottom, move to bottom
