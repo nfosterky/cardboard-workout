@@ -64,6 +64,7 @@ window.onload = function() {
       //   a = 0;
       //   lastVelocity = 0;
       // }
+      // some comments
       if (values.length >= range) {
 
         smoothedA = smooth(a, range);
