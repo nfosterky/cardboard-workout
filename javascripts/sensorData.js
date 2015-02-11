@@ -7,6 +7,7 @@ window.onload = function() {
     xP = document.getElementById("xP");
 
   var lastVelocity = false,
+    lastPosition = 0,
     timeStep,
     lastT = new Date();
 
