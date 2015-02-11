@@ -7,7 +7,7 @@ window.onload = function() {
 
   var lastVelocity = false,
     timeStep,
-    lastT = currentTime();
+    lastT = new Date();
 
 
   function velocity (lastVelocity, acceleration, timeStep) {
