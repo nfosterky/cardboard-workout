@@ -3,13 +3,13 @@
 window.onload = function() {
   console.log("loaded");
   var xA = document.getElementById("xA"),
-    xV = document.getElementById("xV");
-    xP = document.getElementById("xP");
+  xV = document.getElementById("xV");
+  xP = document.getElementById("xP");
 
   var lastVelocity = false,
-    lastPosition = 0,
-    timeStep,
-    lastT = new Date();
+  lastPosition = 0,
+  timeStep,
+  lastT = new Date();
 
 
   function velocity (lastVelocity, acceleration, timeStep) {
@@ -23,13 +23,13 @@ window.onload = function() {
 
 
   var values = [],
-    range = 6;
+  range = 6;
 
   function smooth (value) {
     var numValues = values.length,
-      valuesToAverage,
-      startIndex, endIndex,
-      sum = 0;
+    valuesToAverage,
+    startIndex, endIndex,
+    sum = 0;
 
 
     startIndex = numValues - 6;
@@ -38,7 +38,7 @@ window.onload = function() {
     valuesToAverage = values.slice(startIndex, endIndex);
 
     for (var i = 0; i < valuesToAverage.length; i++) {
-      sum += valuesToAverage[i];
+      sum += parseFloat(valuesToAverage[i]);
     }
 
     return sum / range;
@@ -47,8 +47,8 @@ window.onload = function() {
   // initialize gyro from gyro.js
   function initGyro() {
     var listYAccelerations = [],
-      noise = false,
-      lastXA = false;
+    noise = false,
+    lastXA = false;
 
     // set frequency of measurements in milliseconds
     // some more comments
@@ -56,8 +56,8 @@ window.onload = function() {
 
     gyro.startTracking(function(o) {
       var a = o.x.toFixed(3),
-        t = new Date(),
-        timestep = t - lastT;
+      t = new Date(),
+      timestep = t - lastT;
 
       var smoothedA;
 
@@ -66,23 +66,28 @@ window.onload = function() {
       //   lastVelocity = 0;
       // }
       if (values.length >= range) {
+
         smoothedA = smooth(a);
 
         if (parseFloat(smoothedA) <= 0.1 && parseFloat(smoothedA) >= -0.1) {
-          lastT = t;
-          lastPosition = position(lastPosition, lastVelocity, a,
-            timestep);
+          smoothedA = 0;
+        }
 
-          lastVelocity = velocity(lastVelocity, a, timestep);
+        lastT = t;
+        lastPosition = position(lastPosition, lastVelocity, smoothedA,
+          timestep);
 
-          xA.innerHTML = a;
+          lastVelocity = velocity(lastVelocity, smoothedA, timestep);
+
+          xA.innerHTML = smoothedA;
           xV.innerHTML = lastVelocity;
           xP.innerHTML = lastPosition;
-        }
-      }
-      values.push(a);
-    });
-  }
 
-  initGyro();
-}
+        }
+        values.push(a);
+      });
+    }
+
+    initGyro();
+  }
+  
