@@ -22,17 +22,15 @@ window.onload = function() {
   }
 
 
-  var values = [],
-  range = 6;
+  var values = [];
 
-  function smooth (value) {
+  function smooth (value, range) {
     var numValues = values.length,
-    valuesToAverage,
-    startIndex, endIndex,
-    sum = 0;
+      valuesToAverage,
+      startIndex, endIndex,
+      sum = 0;
 
-
-    startIndex = numValues - 6;
+    startIndex = numValues - range;
     endIndex = numValues - 1;
 
     valuesToAverage = values.slice(startIndex, endIndex);
@@ -56,8 +54,9 @@ window.onload = function() {
 
     gyro.startTracking(function(o) {
       var a = o.x.toFixed(3),
-      t = new Date(),
-      timestep = t - lastT;
+        t = new Date(),
+        timestep = t - lastT,
+        range = 10;
 
       var smoothedA;
 
@@ -67,7 +66,7 @@ window.onload = function() {
       // }
       if (values.length >= range) {
 
-        smoothedA = smooth(a);
+        smoothedA = smooth(a, range);
 
         if (parseFloat(smoothedA) <= 0.1 && parseFloat(smoothedA) >= -0.1) {
           smoothedA = 0;
@@ -90,4 +89,3 @@ window.onload = function() {
 
     initGyro();
   }
-  
