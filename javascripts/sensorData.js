@@ -22,27 +22,27 @@ window.onload = function() {
   }
 
 
-  var values = [];
+  var values = [],
+    range = 6;
 
   function smooth (value) {
-    var range = 6,
-      numValues = values.length,
+    var numValues = values.length,
       valuesToAverage,
       startIndex, endIndex,
       sum = 0;
 
-    if (values.length >= range) {
-      startIndex = numValues - 6;
-      endIndex = numValues - 1;
 
-      valuesToAverage = values.slice(startIndex, endIndex);
+    startIndex = numValues - 6;
+    endIndex = numValues - 1;
 
-      for (var i = 0; i < valuesToAverage.length; i++) {
-        sum += valuesToAverage[i];
-      }
+    valuesToAverage = values.slice(startIndex, endIndex);
 
-      return sum / range;
+    for (var i = 0; i < valuesToAverage.length; i++) {
+      sum += valuesToAverage[i];
     }
+
+    return sum / range;
+
 
     return -1;
   }
@@ -66,17 +66,19 @@ window.onload = function() {
       //   a = 0;
       //   lastVelocity = 0;
       // }
-      a = smooth(a);
+      if (values.length >= range) {
+        a = smooth(a);
 
-      lastT = t;
-      lastPosition = position(lastPosition, lastVelocity, a,
-        timestep);
+        lastT = t;
+        lastPosition = position(lastPosition, lastVelocity, a,
+          timestep);
 
-      lastVelocity = velocity(lastVelocity, a, timestep);
+          lastVelocity = velocity(lastVelocity, a, timestep);
 
-      xA.innerHTML = a;
-      xV.innerHTML = lastVelocity;
-      xP.innerHTML = lastPosition;
+          xA.innerHTML = a;
+          xV.innerHTML = lastVelocity;
+          xP.innerHTML = lastPosition;
+      }
     });
   }
 
