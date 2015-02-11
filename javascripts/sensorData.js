@@ -37,8 +37,9 @@ window.onload = function() {
 
       if (parseFloat(a) <= 0.1 || parseFloat(a) >= -0.1) {
         a = 0;
+        lastVelocity = 0;
       }
-      
+
       lastT = t;
       lastPosition = position(lastPosition, lastVelocity, a,
         timestep);
