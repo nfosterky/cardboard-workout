@@ -13,7 +13,7 @@ window.onload = function() {
 
 
   function velocity (lastVelocity, acceleration, timeStep) {
-    return lastVelocity + (acceleration * timeStep);
+    return lastVelocity + (acceleration * timeStep) / 1000;
   }
 
   function position (lastPosition, lastVelocity, acceleration, timeStep) {
@@ -71,6 +71,7 @@ window.onload = function() {
 
         if (parseFloat(smoothedA) <= 0.1 && parseFloat(smoothedA) >= -0.1) {
           smoothedA = 0;
+          lastVelocity = 0;
         }
 
         lastT = t;
