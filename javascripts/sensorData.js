@@ -21,6 +21,8 @@ window.onload = function() {
     (0.5 * acceleration * timeStep * timeStep);
   }
 
+
+  // initialize gyro from gyro.js
   function initGyro() {
     var listYAccelerations = [],
       noise = false,
@@ -44,8 +46,6 @@ window.onload = function() {
         xV.innerHTML = lastVelocity;
         xP.innerHTML = lastPosition;
       }
-
-
     });
   }
 
