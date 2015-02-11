@@ -34,7 +34,7 @@ window.onload = function() {
         timestep = t - lastT;
 
       lastT = t;
-      lastPosition = position(lastPosition, lastVelocity, acceleration,
+      lastPosition = position(lastPosition, lastVelocity, a,
           timestep);
 
       lastVelocity = velocity(lastVelocity, a, timestep);
