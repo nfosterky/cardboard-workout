@@ -230,7 +230,7 @@ function addVideoFeed () {
       }
     }, function(stream) {
       console.log("getUserMedia");
-      console.log(video);
+      
       // window.stream = stream; // make stream available to console
       var url = window.URL.createObjectURL(stream);
       videoLeft.src = url;
