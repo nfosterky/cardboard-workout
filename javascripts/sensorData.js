@@ -1,4 +1,5 @@
 // sensorData.js
+// retrieving acceleration data
 window.onload = function() {
   console.log("loaded");
   var xA = document.getElementById("xA"),
