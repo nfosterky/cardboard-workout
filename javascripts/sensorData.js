@@ -68,15 +68,17 @@ window.onload = function() {
       if (values.length >= range) {
         smoothedA = smooth(a);
 
-        lastT = t;
-        lastPosition = position(lastPosition, lastVelocity, a,
-          timestep);
+        if (parseFloat(smoothedA) <= 0.1 && parseFloat(smoothedA) >= -0.1) {
+          lastT = t;
+          lastPosition = position(lastPosition, lastVelocity, a,
+            timestep);
 
-        lastVelocity = velocity(lastVelocity, a, timestep);
+          lastVelocity = velocity(lastVelocity, a, timestep);
 
-        xA.innerHTML = a;
-        xV.innerHTML = lastVelocity;
-        xP.innerHTML = lastPosition;
+          xA.innerHTML = a;
+          xV.innerHTML = lastVelocity;
+          xP.innerHTML = lastPosition;
+        }
       }
       values.push(a);
     });
