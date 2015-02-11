@@ -39,11 +39,13 @@ window.onload = function() {
           timestep);
 
         lastVelocity = velocity(lastVelocity, a, timestep);
+
+        xA.innerHTML = a;
+        xV.innerHTML = lastVelocity;
+        xP.innerHTML = lastPosition;
       }
 
-      xA.innerHTML = a;
-      xV.innerHTML = lastVelocity;
-      xP.innerHTML = lastPosition;
+
     });
   }
 
