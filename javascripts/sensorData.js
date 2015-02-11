@@ -28,6 +28,7 @@ window.onload = function() {
       noise = false,
       lastXA = false;
 
+    // set frequency of measurements in milliseconds
     gyro.frequency = 100;
 
     gyro.startTracking(function(o) {
@@ -35,7 +36,7 @@ window.onload = function() {
         t = new Date(),
         timestep = t - lastT;
 
-      if (parseFloat(a) <= 0.1 || parseFloat(a) >= -0.1) {
+      if (parseFloat(a) <= 0.1 && parseFloat(a) >= -0.1) {
         a = 0;
         lastVelocity = 0;
       }
