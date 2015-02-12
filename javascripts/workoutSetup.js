@@ -1,16 +1,12 @@
 // setup scene for workout
 var SPHERE_RADIUS = 50;
 
-var deviceControls;
-
 var cameraMaxY = 400,
   cameraMinY = 200,
-  cameraMaxX = 300,
-  cameraMinX = -100;
-
-var camera, scene, renderer, effect, mesh,
   lastTime = new Date(),
   sphereList = [];
+
+var camera, scene, renderer, effect, mesh, deviceControls;
 
 function init () {
   var tunnel = new THREE.BoxGeometry( 600, 1200, 3000, 10, 10 );
@@ -23,6 +19,7 @@ function init () {
   })
 
   var tunnelMesh = new THREE.Mesh( tunnel, material );
+
   tunnelMesh.position.y = 300;
   tunnelMesh.position.z = -1200;
 
@@ -30,7 +27,6 @@ function init () {
 
   renderer = new THREE.WebGLRenderer({ alpha: true });
   renderer.setPixelRatio( window.devicePixelRatio );
-  // renderer.setSize( window.innerWidth, window.innerHeight );
   document.body.appendChild( renderer.domElement );
 
   effect = new THREE.StereoEffect( renderer );
@@ -44,6 +40,8 @@ function init () {
 
   camera.position.y = 400;
   camera.position.z = 100;
+  // camera.position.y = 3000;
+  // camera.position.z = -800;
 
   //
 
@@ -59,45 +57,52 @@ function init () {
 }
 
 function startObstacles () {
-  var lastY = cameraMaxY;
+  var geometry = new THREE.SphereGeometry(SPHERE_RADIUS, 5, 5),
+    lastY = cameraMaxY,
+    position, target;
+
+  var material = new THREE.MeshBasicMaterial({
+    color: 0xaff00,
+    wireframe: true,
+    wireframeLinewidth: 2
+  });
+
+  var color = new THREE.Color( 0xaff00 );
 
   setInterval(function(){
-    var geometry = new THREE.SphereGeometry(SPHERE_RADIUS, 5, 5)
-
-    var material = new THREE.MeshBasicMaterial({
-      color: 0xaff00,
-      wireframe: true,
-      wireframeLinewidth: 2
-    });
+    material.color = color;
 
     mesh = new THREE.Mesh( geometry, material );
+    mesh.position.z = -3000;
+
+    // maybe refactor seems a bit cluttered
     mesh.position.y = lastY === cameraMaxY ? cameraMinY : cameraMaxY;
     lastY = mesh.position.y;
 
-    mesh.position.z = -1500;
+    position = {
+      x: mesh.position.x,
+      y: mesh.position.y,
+      z: mesh.position.z
+    };
 
-    var position = {
-        x: mesh.position.x,
-        y: mesh.position.y,
-        z: mesh.position.z
-      },
-      target = {
-        x: mesh.position.x,
-        y: mesh.position.y,
-        z: 100
-      };
+    target = {
+      x: mesh.position.x,
+      y: mesh.position.y,
+      z: 1000
+    };
 
     scene.add( mesh );
     sphereList.push(mesh);
 
-    doTween(position, target, mesh, TWEEN.Easing.Circular.Out, 1000);
+    doTween(position, target, mesh, TWEEN.Easing.Circular.Out, 5000);
 
-  }, 1000);
+  }, 5000);
 }
 
 function onWindowResize() {
 
   camera.aspect = window.innerWidth / window.innerHeight;
+
   camera.updateProjectionMatrix();
 
   renderer.setSize( window.innerWidth, window.innerHeight );
@@ -120,6 +125,7 @@ function animate() {
 
 function initGyro() {
   var increment = 100,
+    lastXAccel = false,
     position = {
       x: camera.position.x,
       y: camera.position.y,
@@ -132,16 +138,15 @@ function initGyro() {
     },
     tween;
 
-  var lastXAccel = false;
-
+  // frequency set in milliseconds
   gyro.frequency = 100;
 
-  // some comments
   gyro.startTracking(function(o) {
     var xAccel = parseFloat(o.x.toFixed(3)),
       currentTime = new Date(),
       dAccel, timeElapsed;
 
+    // can I init lastXAccel and lastTime to zero and remove this check?
     if (lastXAccel !== false && lastTime !== false) {
       timeElapsed = currentTime - lastTime;
 
@@ -171,6 +176,7 @@ function initGyro() {
             target.y = cameraMinY;
             target.z = camera.position.z;
 
+            // animate camera movement
             doTween(position, target, camera, TWEEN.Easing.Circular.Out,
                 300);
 
@@ -184,13 +190,14 @@ function initGyro() {
 }
 
 function doTween (position, target, obj, easing, time) {
-  function handleComplete (e) {
 
+  // TODO: This is not being called, find out why
+  function handleComplete (e) {
     console.log("complete");
     console.log(e);
     console.log(this);
-
   }
+
   var tween = new TWEEN.Tween(position)
       .to(target, time);
       // .call(handleComplete);
@@ -199,7 +206,6 @@ function doTween (position, target, obj, easing, time) {
     obj.position.x = position.x;
     obj.position.y = position.y;
     obj.position.z = position.z;
-
   });
 
   tween.easing(easing);
@@ -215,15 +221,19 @@ function addVideoFeed () {
       console.log("Video capture error: ", error);
     };
 
+  // TODO: Clean up this code
   var getUserMedia = navigator.getUserMedia ?
-      function(a, b, c) { navigator.getUserMedia(a, b, c); } :
-      (navigator.webkitGetUserMedia ?
-          function(a, b, c) { navigator.webkitGetUserMedia(a, b, c); } : null);
+          function(a, b, c) { navigator.getUserMedia(a, b, c); } :
+          ( navigator.webkitGetUserMedia ?
+                function(a, b, c) { navigator.webkitGetUserMedia(a, b, c); } :
+                null );
 
   MediaStreamTrack.getSources(function(sourceInfos) {
     var sourceInfo;
 
-    for (var i = 0; i != sourceInfos.length; ++i) {
+    // find last video source - might need to add check, last video might not
+    // always be what we want?
+    for (var i = 0; i < sourceInfos.length; i++) {
       sourceInfo = sourceInfos[i];
 
       if (sourceInfo.kind === 'video') {
@@ -239,24 +249,24 @@ function addVideoFeed () {
         optional: [{sourceId: videoSource}]
       }
     }, function(stream) {
-      console.log("getUserMedia");
-
-      // window.stream = stream; // make stream available to console
       var url = window.URL.createObjectURL(stream);
+
       videoLeft.src = url;
-      videoRight.src = url;
       videoLeft.play();
+
+      videoRight.src = url;
       videoRight.play();
+
     }, errBack);
-
   });
-
 }
 
-function distance(obj1, obj2) {
-  return Math.sqrt(Math.pow(obj1.x - obj2.x, 2) +
-      Math.pow(obj1.y - obj2.y, 2) +
-      Math.pow(obj1.z - obj2.z, 2));
+function distance(p1, p2) {
+  return Math.sqrt(
+            Math.pow(p1.x - p2.x, 2) +
+            Math.pow(p1.y - p2.y, 2) +
+            Math.pow(p1.z - p2.z, 2)
+         );
 }
 
 function checkForCollision () {
@@ -273,11 +283,12 @@ function checkForCollision () {
 }
 
 function removeObject(object) {
+  var selectedObject = scene.getObjectByName(object.name);
+
   console.log("remove object");
   console.log(object);
-  var selectedObject = scene.getObjectByName(object.name);
+
   scene.remove( selectedObject );
-  // animate();
 }
 
 init();

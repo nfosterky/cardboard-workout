@@ -11,19 +11,31 @@
     span {
       padding-bottom: 1rem;
     }
+    button {
+      font-size: 3rem;
+      padding: .5rem;
+      margin: 1rem;
+    }
   </style>
 </head>
 <body>
   <div>Acceleration</div>
   <div>X: <span id="xA"></span></div>
 
-  <div>Velocity</div>
-  <div>X: <span id="xV"></span></div>
+  <div>
+    <label for="inpLabel">
+      Measurement Label:
+      <input name="inpLabel" id="inpLabel" type="text">
+    </label>
+  </div>
 
-  <div>Position</div>
-  <div>X: <span id="xP"></span></div>
+  <div><button id="startStop">Start</button></div>
+
+  <div>Measurement Count: <span id="numMeasurements"></span></div>
+
+  <div>JSON: <span id="json"></span></div>
 
   <script src="javascripts/libs/gyro.js"></script>
-  <script src="javascripts/sensorData.js"></script>
+  <script src="javascripts/recordData.js"></script>
 </body>
 </html>
