@@ -5,11 +5,15 @@
   <title>Sensor Data is awesome</title>
   <style>
     body {
-      font-size: 3rem;
+      font-size: 5rem;
       text-align: center;
     }
     span {
       padding-bottom: 1rem;
+      word-wrap: break-word;
+    }
+    input {
+      font-size: 3rem;
     }
     button {
       font-size: 3rem;
@@ -24,14 +28,14 @@
 
   <div>
     <label for="inpLabel">
-      Measurement Label:
-      <input name="inpLabel" id="inpLabel" type="text">
+      Label:
     </label>
+    <input name="inpLabel" id="inpLabel" type="text">
   </div>
 
   <div><button id="startStop">Start</button></div>
 
-  <div>Measurement Count: <span id="numMeasurements"></span></div>
+  <!-- <div>Measurement Count: <span id="numMeasurements"></span></div> -->
 
   <div>JSON: <span id="json"></span></div>
 
