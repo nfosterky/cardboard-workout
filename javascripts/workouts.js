@@ -11,8 +11,11 @@
 
   function init() {
     // var geometry = new THREE.BoxGeometry( 200, 200, 400 );
-    var radius = 100;
-    var center = new THREE.Vector3(  ); // x, y, z
+
+    /*
+     *  SphereGeometry(radius, widthSegments, heightSegments, phiStart,
+     *      phiLength, thetaStart, thetaLength)
+     */
     var geometry = new THREE.SphereGeometry(150, 10, 10)
 
     var material = new THREE.MeshBasicMaterial({
@@ -42,8 +45,6 @@
     scene.add( mesh );
 
     //
-    mesh.material.color.r = 255;
-    console.log(mesh);
     window.addEventListener( 'resize', onWindowResize, false );
 
   }
