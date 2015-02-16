@@ -67,10 +67,8 @@ function startObstacles () {
     wireframeLinewidth: 2
   });
 
-  var color = new THREE.Color( 0xaff00 );
-
   setInterval(function(){
-    material.color = color;
+    material.color = new THREE.Color( 0xaff00 );
 
     mesh = new THREE.Mesh( geometry, material );
     mesh.position.z = -3000;
@@ -144,7 +142,10 @@ function initGyro() {
   gyro.startTracking(function(o) {
     var xAccel = parseFloat(o.x.toFixed(3)),
       currentTime = new Date(),
+      threshold = .35,
       dAccel, timeElapsed;
+
+    xAccel = removeNoise(threshold, xAccel);
 
     // can I init lastXAccel and lastTime to zero and remove this check?
     if (lastXAccel !== false && lastTime !== false) {
@@ -155,7 +156,8 @@ function initGyro() {
         dAccel = xAccel - lastXAccel;
 
         // acceleration up
-        if (dAccel >= 3) {
+        // if (dAccel >= 3) {
+        if (dAccel === -200) {
 
           // if camera not at top, move to top
           if (camera.position.y < cameraMaxY) {
@@ -169,7 +171,8 @@ function initGyro() {
           }
 
         // acceleration down
-        } else if (dAccel <= -3) {
+        // } else if (dAccel <= -3) {
+        } else if (dAccel === 200) {
 
           // if camera not at bottom, move to bottom
           if (camera.position.y > cameraMinY) {
@@ -187,6 +190,17 @@ function initGyro() {
     }
     lastXAccel = xAccel;
   });
+}
+
+function removeNoise (threshold, accel) {
+  if (accel <= threshold && accel >= -threshold) {
+    accel = 0;
+
+  } else {
+    accel = accel >= threshold ? 100 : -100;
+  }
+
+  return accel;
 }
 
 function doTween (position, target, obj, easing, time) {
