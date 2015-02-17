@@ -27,7 +27,10 @@
 				z: null,
 				alpha: null,
 				beta: null,
-				gamma: null
+				gamma: null,
+				alphaR: null,
+				betaR: null,
+				gammaR: null
 			},
 			calibration = {
 				x: 0,
@@ -200,6 +203,9 @@
 
 				e.target.addEventListener('devicemotion', function(e) {
 					// console.log(e);
+					// measurements.x = e.accelerationIncludingGravity.x - calibration.x;
+					// measurements.y = e.accelerationIncludingGravity.y - calibration.y;
+					// measurements.z = e.accelerationIncludingGravity.z - calibration.z;
 					measurements.x = e.acceleration.x - calibration.x;
 					measurements.y = e.acceleration.y - calibration.y;
 					measurements.z = e.acceleration.z - calibration.z;
