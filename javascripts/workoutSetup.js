@@ -6,7 +6,7 @@ var cameraMaxY = 400,
   lastTime = new Date(),
   sphereList = [];
 
-var camera, scene, renderer, effect, mesh, deviceControls;
+var camera, scene, renderer, effect, sphere, deviceControls;
 
 function init () {
   var tunnel = new THREE.BoxGeometry( 600, 1200, 3000, 10, 10 );
@@ -52,11 +52,14 @@ function init () {
 
   window.addEventListener( 'resize', onWindowResize, false );
 
-  startObstacles();
+  makeSpheres(2);
+  startSpheres();
+
   addVideoFeed();
 }
+var spheres = [];
 
-function startObstacles () {
+function makeSpheres (numToMake) {
   var geometry = new THREE.SphereGeometry(SPHERE_RADIUS, 5, 5),
     lastY = cameraMaxY,
     position, target;
@@ -67,32 +70,45 @@ function startObstacles () {
     wireframeLinewidth: 2
   });
 
+  var sphere = {};
+  // material.color = new THREE.Color( 0xaff00 );
+  for (var i = 0; i < numToMake; i++) {
+    sphere = new THREE.Mesh( geometry, material );
+    sphere.position.z = -3000;
+    sphere.position.y = lastY === cameraMaxY ? cameraMinY : cameraMaxY;
+    lastY = sphere.position.y;
+
+    scene.add( sphere );
+    sphereList[i] = sphere;
+  }
+}
+
+function startSpheres () {
+  var sphereIndex = 0;
+
   setInterval(function(){
-    material.color = new THREE.Color( 0xaff00 );
+    sphere = sphereList[sphereIndex];
 
-    mesh = new THREE.Mesh( geometry, material );
-    mesh.position.z = -3000;
+    if (sphereIndex < sphereList.length) {
+      sphereIndex++;
 
-    // maybe refactor seems a bit cluttered
-    mesh.position.y = lastY === cameraMaxY ? cameraMinY : cameraMaxY;
-    lastY = mesh.position.y;
+    } else {
+      sphereIndex = 0;
+    }
 
     position = {
-      x: mesh.position.x,
-      y: mesh.position.y,
-      z: mesh.position.z
+      x: sphere.position.x,
+      y: sphere.position.y,
+      z: sphere.position.z
     };
 
     target = {
-      x: mesh.position.x,
-      y: mesh.position.y,
+      x: sphere.position.x,
+      y: sphere.position.y,
       z: 1000
     };
 
-    scene.add( mesh );
-    sphereList.push(mesh);
-
-    doTween(position, target, mesh, TWEEN.Easing.Circular.Out, 5000);
+    doTween(position, target, sphere, TWEEN.Easing.Circular.Out, 5000);
 
   }, 5000);
 }
@@ -235,12 +251,19 @@ function addVideoFeed () {
       console.log("Video capture error: ", error);
     };
 
-  // TODO: Clean up this code
-  var getUserMedia = navigator.getUserMedia ?
-          function(a, b, c) { navigator.getUserMedia(a, b, c); } :
-          ( navigator.webkitGetUserMedia ?
-                function(a, b, c) { navigator.webkitGetUserMedia(a, b, c); } :
-                null );
+  var getUserMedia = null;
+
+  if (navigator.getUserMedia) {
+    getUserMedia = function(a, b, c) {
+      navigator.getUserMedia(a, b, c);
+    }
+
+  } else if (navigator.webkitGetUserMedia) {
+    getUserMedia = function(a, b, c) {
+      navigator.webkitGetUserMedia(a, b, c);
+    }
+  }
+
 
   MediaStreamTrack.getSources(function(sourceInfos) {
     var sourceInfo;
@@ -284,14 +307,19 @@ function distance(p1, p2) {
 }
 
 function checkForCollision () {
-  var sphere;
+  var target = { x: 0, y: 0, z: -3000 },
+    sphere;
 
   for (var i = 0; i < sphereList.length; i++) {
     sphere = sphereList[i];
 
+    // collision
     if (distance(camera.position, sphere.position) <= SPHERE_RADIUS) {
-      sphere.material.color.r = 255;
-      sphere.material.color.g = 0;
+      console.log("collision");
+      target.y = sphere.position.y;
+      doTween(sphere.position, target, sphere, TWEEN.Easing.Circular.Out, 5000);
+      // sphere.material.color.r = 255;
+      // sphere.material.color.g = 0;
     }
   }
 }
