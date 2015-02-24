@@ -35,7 +35,7 @@ function init () {
     window.innerHeight, 1, 4000 );
 
   // camera.position.y = 400;
-  camera.position.z = 400;
+  camera.position.z = 600;
   camera.position.y = 200;
 
   //
@@ -94,6 +94,10 @@ function initGyro () {
     color: 0xaff00
   });
 
+  var materialY = new THREE.LineBasicMaterial({
+    color: 0xff0000
+  });
+
   var materialZ = new THREE.LineBasicMaterial({
     color: 0xa00ff
   });
@@ -113,38 +117,75 @@ function initGyro () {
    *  gamma: y-axis:  -90 -  90
    */
   gyro.startTracking(function(o) {
-    var xAccel = parseFloat(o.x.toFixed(3)),
-      yAccel = parseFloat(o.y.toFixed(3)),
+    var xAccel = parseFloat(o.y.toFixed(3)),  // mapping x to y
+      yAccel = parseFloat(o.x.toFixed(3)),    // mapping y to x
       zAccel = parseFloat(o.z.toFixed(3)),
       currentTime = new Date(),
-      threshold = .35,
+      threshold = 0.8,
+      camX = camera.position.x,  // accelY
+      camY = camera.position.y,  // accelX
+      camZ = camera.position.z,  // accelZ
       geometry, line,
       dAccel,
       sum;
 
-    // var rates = instanceOfDeviceMotionEvent.rotationRate;
-
-    // console.log("rates: ", rates);
-
-    console.log("alpha: ", o.alpha);
-    console.log("beta: ", o.beta);
-    console.log("gamma: ", o.gamma);
-      // console.log("y: ", yAccel);
-      // console.log("z: ", zAccel);
+    // console.log("alpha: ", o.alpha);
+    // console.log("beta: ", o.beta);
+    // console.log("gamma: ", o.gamma);
 
     // remove noise, convert signal to 100, 0, -100
     xAccel = removeNoise(threshold, xAccel);
     yAccel = removeNoise(threshold, yAccel);
     zAccel = removeNoise(threshold, zAccel);
 
-    // console.log("z-n: ", zAccel);
-    // console.log("y-n: ", yAccel);
     if (xAccel - prevXAccel === 200) {
-      // console.log("down");
+      // console.log("left");
+      camX -= 100;
 
     } else if (xAccel - prevXAccel === -200){
-      // console.log("up");
+      // console.log("right");
+      camX += 100;
     }
+
+    if (yAccel - prevYAccel === 200) {
+      // console.log("down");
+      camY -= 100;
+
+    } else if (yAccel - prevYAccel === -200){
+      // console.log("up");
+      camY += 100;
+    }
+
+    if (zAccel - prevZAccel === 200) {
+      // console.log("back");
+      camZ -= 100;
+
+    } else if (zAccel - prevZAccel === -200){
+      // console.log("forward");
+      camZ += 100;
+    } else {
+      camZ = 0;
+    }
+
+
+    var origin = {
+      x: prevX,
+      z: prevZ
+    },
+    destinaton;
+
+    // console.log("beta: ", o.beta);
+    // console.log("gamma: ", o.gamma);
+    var alpha = Math.round(o.alpha);
+    console.log("alpha: ", alpha);
+    if (camZ !== 0) {
+      // orgin, angle, distance
+      destination = getDestination(origin, alpha, camZ);
+      console.log("origin: ", origin);
+      console.log("alpha: ", alpha);
+      console.log("destination: ", destination);
+    }
+
 
     // moving x position of line and camera
     x = prevX + POINT_RADIUS
@@ -156,24 +197,35 @@ function initGyro () {
      */
     geometry = new THREE.Geometry();
     geometry.vertices.push(
-      new THREE.Vector3( prevX, prevXAccel, 0 ),
-      new THREE.Vector3( x, xAccel, 0 )
+      new THREE.Vector3( prevX, prevXAccel, 5 ),
+      new THREE.Vector3( x, xAccel, 5 )
     );
     line = new THREE.Line( geometry, material );
     scene.add(line);
 
+    // Mapping Y acceleration
+    geometry = new THREE.Geometry();
+    geometry.vertices.push(
+      new THREE.Vector3( prevX, -200 + prevYAccel, 5 ),
+      new THREE.Vector3( x, -200 + yAccel, 5 )
+    );
+    line = new THREE.Line( geometry, materialY );
+    scene.add(line);
 
     // Mapping Z Acceleration
     geometry = new THREE.Geometry();
     geometry.vertices.push(
-      new THREE.Vector3( prevX, 0, prevZAccel ),
-      new THREE.Vector3( x, 0, zAccel )
+      new THREE.Vector3( prevX, 200 + prevZAccel, 5 ),
+      new THREE.Vector3( x, 200 + zAccel, 5 )
     );
     line = new THREE.Line( geometry, materialZ );
     scene.add(line);
 
     // move camera
-    camera.position.x = x;
+    camera.position.x = x;  //camX + POINT_RADIUS;
+    // camera.position.y = camY;
+    // camera.position.z = camZ;
+
     gridOne.position.x = x;
     gridTwo.position.x = x;
     gridThree.position.x = x;
@@ -181,9 +233,26 @@ function initGyro () {
     // update previous position and acceleration
     prevX = x;
     prevXAccel = xAccel;
-    prevZ = z;
+    prevY = camera.position.y;
+    prevYAccel = yAccel;
+    prevZ = camera.position.z;
     prevZAccel = zAccel;
+
   });
+}
+
+// takes origin which has x and z coords moves distance at angle of rotation
+// returns new point
+function getDestination (origin, angle, distance) {
+  var sin = sin(angle),
+      cos = cos(angle),
+      newX = origin.z * sin + origin.x * cos,
+      newZ = origin.z * cos + origin.x * sin;
+
+  return {
+    x: newX,
+    z: newZ
+  };
 }
 
 function animate () {
