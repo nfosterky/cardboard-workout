@@ -1,5 +1,4 @@
-  var camera, scene, renderer;
-  var mesh;
+  var camera, scene, renderer, mesh;
 
   var lastVelocity = 0,
       lastTime = new Date(),
@@ -56,8 +55,12 @@
   }
 
   function position (lastPosition, lastVelocity, acceleration, timeStep) {
-    return lastPosition + lastVelocity * timeStep +
-        (0.5 * acceleration * timeStep * timeStep);
+    return lastPosition + (lastVelocity * timeStep) +
+        (0.5 * acceleration * Math.pow(timeStep));
+  }
+
+  function simplePosition (lastPosition, lastVelocity, timeStep) {
+    return lastPosition + (lastVelocity * timeStep);
   }
 
   function initGyro() {
