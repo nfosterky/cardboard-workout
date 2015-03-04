@@ -281,11 +281,9 @@ function addVideoFeed () {
       }
     }
 
-    getUserMedia.call(this, {
-      video: {
-        optional: [{sourceId: videoSource}]
-      }
-    }, function(stream) {
+    var media = { video: { optional: [{sourceId: videoSource}] } };
+
+    getUserMedia(media, function(stream) {
       var url = window.URL.createObjectURL(stream);
 
       videoLeft.src = url;
