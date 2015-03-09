@@ -11,7 +11,6 @@ window.onload = function() {
   timeStep,
   lastT = new Date();
 
-
   function velocity (lastVelocity, acceleration, timeStep) {
     return lastVelocity + (acceleration * timeStep) / 1000;
   }

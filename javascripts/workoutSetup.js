@@ -266,7 +266,7 @@ function addVideoFeed () {
 
 
   MediaStreamTrack.getSources(function(sourceInfos) {
-    var sourceInfo;
+    var sourceInfo, media;
 
     // find last video source - might need to add check, last video might not
     // always be what we want?
@@ -281,7 +281,7 @@ function addVideoFeed () {
       }
     }
 
-    var media = { video: { optional: [{sourceId: videoSource}] } };
+    media = { video: { optional: [{ sourceId: videoSource }] } };
 
     getUserMedia(media, function(stream) {
       var url = window.URL.createObjectURL(stream);
