@@ -1,31 +1,36 @@
 // setup scene for workout
-var START_POSITION_Z = -3000;
-var SPHERE_RADIUS = 50;
+var START_POSITION_Z = -1500,
+  SPHERE_RADIUS = 50;
 
-var cameraMaxY = 400,
-  cameraMinY = 200,
+var cameraMaxY = 450,
+  cameraMinY = 150,
   lastTime = new Date(),
   sphereList = [];
 
 var camera, scene, renderer, effect, sphere, deviceControls;
 
 function init () {
-  var tunnel = new THREE.BoxGeometry( 600, 1200, 3000, 10, 10 );
+  //  BoxGeometry(width, height, depth, widthSegments, heightSegments,
+  //      depthSegments)
+  var tunnel = new THREE.BoxGeometry( 400, 600, 1500, 10, 10 );
 
   var material = new THREE.MeshBasicMaterial({
     color: 0xaffff,
-    opacity: 0.5,
     wireframe: true,
     transparent: true
   })
 
   var tunnelMesh = new THREE.Mesh( tunnel, material );
 
+  scene = new THREE.Scene();
+
   tunnelMesh.position.y = 300;
-  tunnelMesh.position.z = -1200;
+
+  scene.add( tunnelMesh );
 
   renderer = new THREE.WebGLRenderer({ alpha: true });
   renderer.setPixelRatio( window.devicePixelRatio );
+
   document.body.appendChild( renderer.domElement );
 
   effect = new THREE.StereoEffect( renderer );
@@ -35,15 +40,12 @@ function init () {
   //
 
   camera = new THREE.PerspectiveCamera( 70, window.innerWidth /
-    window.innerHeight, 1, 4000 );
+    window.innerHeight, 1, 2000 );
 
-  camera.position.y = 400;
+  camera.position.y = cameraMaxY;
   camera.position.z = 100;
 
   deviceControls = new THREE.DeviceOrientationControls( camera );
-
-  scene = new THREE.Scene();
-  scene.add( tunnelMesh );
 
   window.addEventListener( 'resize', onWindowResize, false );
 
@@ -52,7 +54,6 @@ function init () {
 
   addVideoFeed();
 }
-var spheres = [];
 
 function makeSpheres (numToMake) {
   var geometry = new THREE.SphereGeometry(SPHERE_RADIUS, 5, 5),
@@ -103,9 +104,9 @@ function startSpheres () {
       z: 1000
     };
 
-    doTween(position, target, sphere, TWEEN.Easing.Circular.Out, 5000);
+    doTween(position, target, sphere, TWEEN.Easing.Circular.Out, 3000);
 
-  }, 5000);
+  }, 2000);
 }
 
 function onWindowResize() {
@@ -222,7 +223,7 @@ function doTween (position, target, obj, easing, time) {
 
         // if sphere and not at start position z
         if (obj.type === "Mesh" && obj.position.z !== START_POSITION_Z) {
-          obj.position.z = START_POSITION_Z
+          obj.position.z = START_POSITION_Z;
         }
       });
 
@@ -316,8 +317,6 @@ function checkForCollision () {
     }
   }
 }
-
-
 
 init();
 animate();
