@@ -264,36 +264,38 @@ function addVideoFeed () {
     }
   }
 
+  if (typeof MediaStreamTrack !== "undefined") {
+    MediaStreamTrack.getSources(function(sourceInfos) {
+      var sourceInfo, media;
 
-  MediaStreamTrack.getSources(function(sourceInfos) {
-    var sourceInfo, media;
+      // find last video source - might need to add check, last video might not
+      // always be what we want?
+      for (var i = 0; i < sourceInfos.length; i++) {
+        sourceInfo = sourceInfos[i];
 
-    // find last video source - might need to add check, last video might not
-    // always be what we want?
-    for (var i = 0; i < sourceInfos.length; i++) {
-      sourceInfo = sourceInfos[i];
+        if (sourceInfo.kind === 'video') {
+          videoSource = sourceInfo.id;
 
-      if (sourceInfo.kind === 'video') {
-        videoSource = sourceInfo.id;
-
-      } else {
-        console.log('Some other kind of source: ', sourceInfo);
+        } else {
+          console.log('Some other kind of source: ', sourceInfo);
+        }
       }
-    }
 
-    media = { video: { optional: [{ sourceId: videoSource }] } };
+      media = { video: { optional: [{ sourceId: videoSource }] } };
 
-    getUserMedia(media, function(stream) {
-      var url = window.URL.createObjectURL(stream);
+      getUserMedia(media, function(stream) {
+        var url = window.URL.createObjectURL(stream);
 
-      videoLeft.src = url;
-      videoLeft.play();
+        videoLeft.src = url;
+        videoLeft.play();
 
-      videoRight.src = url;
-      videoRight.play();
+        videoRight.src = url;
+        videoRight.play();
 
-    }, errBack);
-  });
+      }, errBack);
+    });  
+  }
+
 }
 
 function distance(p1, p2) {
