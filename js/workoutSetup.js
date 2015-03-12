@@ -23,8 +23,6 @@ function init () {
   tunnelMesh.position.y = 300;
   tunnelMesh.position.z = -1200;
 
-  //
-
   renderer = new THREE.WebGLRenderer({ alpha: true });
   renderer.setPixelRatio( window.devicePixelRatio );
   document.body.appendChild( renderer.domElement );
@@ -40,10 +38,6 @@ function init () {
 
   camera.position.y = 400;
   camera.position.z = 100;
-  // camera.position.y = 3000;
-  // camera.position.z = -800;
-
-  //
 
   deviceControls = new THREE.DeviceOrientationControls( camera );
 
@@ -71,7 +65,7 @@ function makeSpheres (numToMake) {
   });
 
   var sphere = {};
-  // material.color = new THREE.Color( 0xaff00 );
+
   for (var i = 0; i < numToMake; i++) {
     sphere = new THREE.Mesh( geometry, material );
     sphere.position.z = -3000;
@@ -172,7 +166,6 @@ function initGyro() {
         dAccel = xAccel - lastXAccel;
 
         // acceleration up
-        // if (dAccel >= 3) {
         if (dAccel === -200) {
 
           // if camera not at top, move to top
@@ -180,14 +173,12 @@ function initGyro() {
             target.y = cameraMaxY;
             target.z = camera.position.z;
 
-            doTween(position, target, camera, TWEEN.Easing.Circular.Out,
-                300);
+            doTween(position, target, camera, TWEEN.Easing.Circular.Out, 300);
 
             lastTime = currentTime;
           }
 
         // acceleration down
-        // } else if (dAccel <= -3) {
         } else if (dAccel === 200) {
 
           // if camera not at bottom, move to bottom
@@ -196,8 +187,7 @@ function initGyro() {
             target.z = camera.position.z;
 
             // animate camera movement
-            doTween(position, target, camera, TWEEN.Easing.Circular.Out,
-                300);
+            doTween(position, target, camera, TWEEN.Easing.Circular.Out, 300);
 
             lastTime = currentTime;
           }
@@ -220,17 +210,7 @@ function removeNoise (threshold, accel) {
 }
 
 function doTween (position, target, obj, easing, time) {
-
-  // TODO: This is not being called, find out why
-  function handleComplete (e) {
-    console.log("complete");
-    console.log(e);
-    console.log(this);
-  }
-
-  var tween = new TWEEN.Tween(position)
-      .to(target, time);
-      // .call(handleComplete);
+  var tween = new TWEEN.Tween(position).to(target, time);
 
   tween.onUpdate(function(){
     obj.position.x = position.x;
@@ -281,6 +261,7 @@ function addVideoFeed () {
         }
       }
 
+      // use sourceId to select either front or back camera
       media = { video: { optional: [{ sourceId: videoSource }] } };
 
       getUserMedia(media, function(stream) {
@@ -293,17 +274,17 @@ function addVideoFeed () {
         videoRight.play();
 
       }, errBack);
-    });  
+    });
   }
 
 }
 
 function distance(p1, p2) {
   return Math.sqrt(
-            Math.pow(p1.x - p2.x, 2) +
-            Math.pow(p1.y - p2.y, 2) +
-            Math.pow(p1.z - p2.z, 2)
-         );
+    Math.pow(p1.x - p2.x, 2) +
+    Math.pow(p1.y - p2.y, 2) +
+    Math.pow(p1.z - p2.z, 2)
+  );
 }
 
 function checkForCollision () {
@@ -315,23 +296,16 @@ function checkForCollision () {
 
     // collision
     if (distance(camera.position, sphere.position) <= SPHERE_RADIUS) {
-      console.log("collision");
       target.y = sphere.position.y;
       doTween(sphere.position, target, sphere, TWEEN.Easing.Circular.Out, 5000);
-      // sphere.material.color.r = 255;
-      // sphere.material.color.g = 0;
     }
+
+    // check if player missed ball - if so reset ball
+    // if (sphere.position.x >== target.position.x ) { }
   }
 }
 
-function removeObject(object) {
-  var selectedObject = scene.getObjectByName(object.name);
 
-  console.log("remove object");
-  console.log(object);
-
-  scene.remove( selectedObject );
-}
 
 init();
 animate();
