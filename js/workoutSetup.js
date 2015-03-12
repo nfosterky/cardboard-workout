@@ -1,4 +1,5 @@
 // setup scene for workout
+var START_POSITION_Z = -3000;
 var SPHERE_RADIUS = 50;
 
 var cameraMaxY = 400,
@@ -68,7 +69,7 @@ function makeSpheres (numToMake) {
 
   for (var i = 0; i < numToMake; i++) {
     sphere = new THREE.Mesh( geometry, material );
-    sphere.position.z = -3000;
+    sphere.position.z = START_POSITION_Z;
     sphere.position.y = lastY === cameraMaxY ? cameraMinY : cameraMaxY;
     lastY = sphere.position.y;
 
@@ -80,7 +81,7 @@ function makeSpheres (numToMake) {
 function startSpheres () {
   var sphereIndex = 0;
 
-  setInterval(function(){
+  setInterval(function() {
     sphere = sphereList[sphereIndex];
 
     if (sphereIndex < sphereList.length) {
@@ -210,9 +211,23 @@ function removeNoise (threshold, accel) {
 }
 
 function doTween (position, target, obj, easing, time) {
-  var tween = new TWEEN.Tween(position).to(target, time);
+  var startPosition = {
+    x: position.x,
+    y: position.y,
+    z: position.z
+  }
+  var tween = new TWEEN.Tween(position)
+      .to(target, time)
+      .onComplete(function() {
 
-  tween.onUpdate(function(){
+        // if sphere and not at start position z
+        if (obj.type === "Mesh" && obj.position.z !== START_POSITION_Z) {
+          obj.position.z = START_POSITION_Z
+        }
+      });
+
+  tween.onUpdate(function() {
+    // console.log("is this called");
     obj.position.x = position.x;
     obj.position.y = position.y;
     obj.position.z = position.z;
@@ -288,7 +303,7 @@ function distance(p1, p2) {
 }
 
 function checkForCollision () {
-  var target = { x: 0, y: 0, z: -3000 },
+  var target = { x: 0, y: 0, z: START_POSITION_Z },
     sphere;
 
   for (var i = 0; i < sphereList.length; i++) {
@@ -299,9 +314,6 @@ function checkForCollision () {
       target.y = sphere.position.y;
       doTween(sphere.position, target, sphere, TWEEN.Easing.Circular.Out, 5000);
     }
-
-    // check if player missed ball - if so reset ball
-    // if (sphere.position.x >== target.position.x ) { }
   }
 }
 
